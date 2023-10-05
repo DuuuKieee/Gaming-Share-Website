@@ -43,6 +43,7 @@ app.get("/register", function (req, res) {
 
 app.post("/register", function (req, res) {
   if (req.body.password == req.body.password_repeat) {
+    co
     if (register(req.body.email, req.body.username, req.body.password) == false) {
       res.redirect('/register');
     }
