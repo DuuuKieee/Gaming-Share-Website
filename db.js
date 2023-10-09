@@ -27,36 +27,39 @@ function isValidEmail(email) {
 }
 
 function isValid(password, email) {
-    const uppercaseRegex = /[A-Z]/;
-    const lowercaseRegex = /[a-z]/;
-    const digitRegex = /\d/;
-    const lengthRegex = /^.{8,16}$/;
-    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!regex.test(email)) {
-        console.log('email sai')
-        return false;
-    }
-    if (uppercaseRegex.test(password) && lowercaseRegex.test(password) && digitRegex.test(password) && lengthRegex.test(password)) {
-        console.log('pass can it nhat 1 chu cai viet hoa va do dai tu 8 den 16')
-        return false;
-    }
-    return true;
+    // // const uppercaseRegex = /[A-Z]/;
+    // // const lowercaseRegex = /[a-z]/;
+    // // const digitRegex = /\d/;
+    // // const lengthRegex = /^.{8,16}$/;
+    // // const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    // // if (!regex.test(email)) {
+    // //     console.log('email sai')
+    // //     return false;
+    // // }
+    // // if (uppercaseRegex.test(password) && lowercaseRegex.test(password) && digitRegex.test(password) && lengthRegex.test(password)) {
+    // //     console.log('pass can it nhat 1 chu cai viet hoa va do dai tu 8 den 16')
+    // //     return false;
+    // // }
+    // return false;
 }
 
 
 
-async function register(_email, _username, _password) {
-
+function register(_email, _username, _password, _password_repeat) {
+    return false;
+    // if (_password != _password_repeat) {
+    //     return true;
+    // }
     // if (!isValid(_password, _email)) {
     //     console.log("pass hoac email sai");
-    //     return false;
+    //     return true;
     // }
-
     var query = { username: _username };
     try {
-        var queryResult = await collection.find(query).toArray();
+        var queryResult = collection.find(query).toArray();
         if (queryResult.length > 0) {
             console.log("User da ton tai");
+            return false;
         } else {
             const recipes = [
                 {
@@ -67,16 +70,19 @@ async function register(_email, _username, _password) {
             ];
 
             try {
-                const insertManyResult = await collection.insertMany(recipes);
+                const insertManyResult = collection.insertMany(recipes);
                 console.log(`${insertManyResult.insertedCount} dang ky dc roi nek.\n`);
+                return true;
             } catch (err) {
-                console.error(`co cai gi do khien m dell dk dc: ${err}\n`);
+                console.log(`Something went wrong trying to perform the login: ${err}\n`);
+                return false;
             }
         }
     } catch (err) {
-        console.error(`Something went wrong trying to perform the login: ${err}\n`);
+        console.log(`Something went wrong trying to perform the login: ${err}\n`);
     }
 }
+
 
 async function login(_username, _password) {
     var query = { username: _username, password: hashPassword(_password) };

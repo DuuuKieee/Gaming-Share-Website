@@ -43,20 +43,21 @@ app.post("/login", function (req, res) {
 });
 
 app.get("/register", function (req, res) {
-  res.sendFile(path.join(__dirname, "register.html"))
+  res.sendFile(path.join(__dirname, "/register.html"))
 });
 
 app.post("/register", function (req, res) {
-  if (req.body.password == req.body.password_repeat) {
-    if (register(req.body.email, req.body.username, req.body.password) == false) {
-      res.redirect('/register');
-    }
-    else {
-      res.redirect('/login');
-    }
+  
+  if (register(req.body.email, req.body.username, req.body.password, req.body.password_repeat) === true) {
+    console.log(register(req.body.email, req.body.username, req.body.password, req.body.password_repeat));
+    return res.redirect('/login');
+
   }
   else {
-    return error('concak nhap cho dung coi');
+    console.log("sai");
+    console.log(register(req.body.email, req.body.username, req.body.password, req.body.password_repeat));
+    return res.redirect('/register');
+    
   }
 });
 
