@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Upload Files</title>
+</head>
+<body>
+  <h1>Upload Files</h1>
+  <form action="/upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="files" multiple>
+    <input type="submit" value="Upload">
+    <label for="gamename"><b>Game name</b></label>
+      <input type="text" placeholder="Enter Game Name" name="gamename" id="gamename" required>
+  </form>
+</body>
+</html>

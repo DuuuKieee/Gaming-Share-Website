@@ -1,0 +1,52 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Game Selection</title>
+  <script>
+    // Function to redirect to game page
+    function goToGame(gamename) {
+      window.location.href = `/${gamename}`;
+    }
+
+    // Function to add a new game button
+    function addGameButton(gamename) {
+      var button = document.createElement('button');
+      button.textContent = gamename;
+      button.onclick = function() {
+        goToGame(gamename);
+      };
+
+      document.getElementById('gameButtons').appendChild(button);
+    }
+
+    // Example function to simulate game upload
+    function simulateGameUpload(gamename) {
+      // Simulate uploading game
+      console.log('Uploading game: ' + gamename);
+
+      // Simulate server response
+      setTimeout(function() {
+        console.log('Game uploaded: ' + gamename);
+        addGameButton(gamename);
+      }, 2000);
+    }
+  </script>
+</head>
+<body>
+  <h1>Game Selection</h1>
+  <div id="gameButtons">
+    <button onclick="goToGame('game1')">Game 1</button>
+    <button onclick="goToGame('game2')">Game 2</button>
+    <button onclick="goToGame('game3')">Game 3</button>
+  </div>
+  <form action="/upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="files" multiple>
+    <input type="submit" value="Upload">
+    <label for="gamename"><b>Game name</b></label>
+      <input type="text" placeholder="Enter Game Name" name="gamename" id="gamename" required>
+      <button onclick="addGameButton(gamename)">UploadBtn</button>
+  </form>
+</body>
+</html>
