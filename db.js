@@ -47,10 +47,10 @@ function isValid(password, email) {
 
 async function register(_email, _username, _password) {
 
-    if (!isValid(_password, _email)) {
-        console.log("cai lon que con cac");
-        return false;
-    }
+    // if (!isValid(_password, _email)) {
+    //     console.log("pass hoac email sai");
+    //     return false;
+    // }
 
     var query = { username: _username };
     try {
@@ -79,7 +79,7 @@ async function register(_email, _username, _password) {
 }
 
 async function login(_username, _password) {
-    var query = { username: _username, password: _password };
+    var query = { username: _username, password: hashPassword(_password) };
     try {
         var queryResult = await collection.find(query).toArray();
         if (queryResult.length > 0) {

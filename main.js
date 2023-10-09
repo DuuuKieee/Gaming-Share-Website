@@ -1,5 +1,5 @@
 const express = require("express");
-const { register } = require("./db.js");
+const { register, login } = require("./db.js");
 const app = express();
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const path = require("path");
@@ -35,7 +35,12 @@ app.get("/", function (req, res) {
 
 app.get("/login", function (req, res) {
   res.sendFile(path.join(__dirname, "/login.html"));
-}); ``
+});
+
+app.post("/login", function (req, res) {
+  login(req.body.username, req.body.password);
+  res.sendFile(path.join(__dirname, "/success.html"));
+});
 
 app.get("/register", function (req, res) {
   res.sendFile(path.join(__dirname, "register.html"))
@@ -43,7 +48,6 @@ app.get("/register", function (req, res) {
 
 app.post("/register", function (req, res) {
   if (req.body.password == req.body.password_repeat) {
-    co
     if (register(req.body.email, req.body.username, req.body.password) == false) {
       res.redirect('/register');
     }
