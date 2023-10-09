@@ -1,17 +1,14 @@
 const express = require("express");
+const passport = require('passport');
+const session = require('express-session');
 const { register, login } = require("./db.js");
-const app = express();
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const path = require("path");
 const { error } = require("console");
+const { MongoClient, ServerApiVersion } = require('mongodb');
+
+const app = express();
+const path = require("path");
 const port = 8000;
-
-
 const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: false }));
-
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
 
 // use built-in middleware from Express to serve static assets
 app.use(
@@ -29,12 +26,37 @@ app.use(
   })
 );
 
+app.use(session({
+  secret: 'mysecretkey',
+  resave: false,
+  saveUninitialized: true
+}));
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+app.use(passport.initialize());
+app.use(passport.session());
+
+function Auth(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  } else {
+    res.redirect('/login');
+  }
+}
+
+
 app.get("/", function (req, res) {
   res.sendFile(path.join(__dirname, "/index.html"));
 });
 
 app.get("/login", function (req, res) {
   res.sendFile(path.join(__dirname, "/login.html"));
+});
+
+app.get("/successs", Auth, function (req, res) {
+  res.sendFile(path.join(__dirname, "/success.html"));
 });
 
 app.post("/login", function (req, res) {
@@ -47,7 +69,7 @@ app.get("/register", function (req, res) {
 });
 
 app.post("/register", function (req, res) {
-  
+
   if (register(req.body.email, req.body.username, req.body.password, req.body.password_repeat) === true) {
     console.log(register(req.body.email, req.body.username, req.body.password, req.body.password_repeat));
     return res.redirect('/login');
@@ -57,7 +79,6 @@ app.post("/register", function (req, res) {
     console.log("sai");
     console.log(register(req.body.email, req.body.username, req.body.password, req.body.password_repeat));
     return res.redirect('/register');
-    
   }
 });
 

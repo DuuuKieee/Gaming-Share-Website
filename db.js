@@ -12,6 +12,7 @@ const dbName = "DB";
 const collectionName = "User";
 const database = client.db(dbName);
 const collection = database.collection(collectionName);
+const passport = require('passport');
 const crypto = require('crypto');
 const { count } = require('console');
 
@@ -26,34 +27,34 @@ function isValidEmail(email) {
     return regex.test(email);
 }
 
-function isValid(password, email) {
-    // // const uppercaseRegex = /[A-Z]/;
-    // // const lowercaseRegex = /[a-z]/;
-    // // const digitRegex = /\d/;
-    // // const lengthRegex = /^.{8,16}$/;
-    // // const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    // // if (!regex.test(email)) {
-    // //     console.log('email sai')
-    // //     return false;
-    // // }
-    // // if (uppercaseRegex.test(password) && lowercaseRegex.test(password) && digitRegex.test(password) && lengthRegex.test(password)) {
-    // //     console.log('pass can it nhat 1 chu cai viet hoa va do dai tu 8 den 16')
-    // //     return false;
-    // // }
+function isValidPassword(password, email) {
+    const uppercaseRegex = /[A-Z]/;
+    const lowercaseRegex = /[a-z]/;
+    const digitRegex = /\d/;
+    const lengthRegex = /^.{8,16}$/;
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (uppercaseRegex.test(password) && lowercaseRegex.test(password) && digitRegex.test(password) && lengthRegex.test(password)) {
+        console.log('pass can it nhat 1 chu cai viet hoa va do dai tu 8 den 16')
+        return false;
+    }
     // return false;
 }
 
 
 
 function register(_email, _username, _password, _password_repeat) {
-    return false;
-    // if (_password != _password_repeat) {
-    //     return true;
-    // }
-    // if (!isValid(_password, _email)) {
-    //     console.log("pass hoac email sai");
-    //     return true;
-    // }
+    // return false;
+    if (_password != _password_repeat) {
+        return false;
+    }
+    if (isValidEmail(_email) === false) {
+        console.log("email sai");
+        return false;
+    }
+    if (isValidPassword(_password === false)) {
+        console.log("pass sai");
+        return false;
+    }
     var query = { username: _username };
     try {
         var queryResult = collection.find(query).toArray();
@@ -90,6 +91,9 @@ async function login(_username, _password) {
         var queryResult = await collection.find(query).toArray();
         if (queryResult.length > 0) {
             console.log("Login successful");
+            passport.serializeUser((user, done) => {
+                done(null, user);
+            });
         } else {
             console.log("Login fail");
         }
