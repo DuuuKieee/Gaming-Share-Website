@@ -55,7 +55,7 @@ app.get("/login", function (req, res) {
   res.sendFile(path.join(__dirname, "/login.html"));
 });
 
-app.get("/successs", Auth, function (req, res) {
+app.get("/success", Auth, function (req, res) {
   res.sendFile(path.join(__dirname, "/success.html"));
 });
 

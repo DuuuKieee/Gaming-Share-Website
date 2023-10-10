@@ -93,6 +93,7 @@ async function login(_username, _password) {
             console.log("Login successful");
             passport.serializeUser((user, done) => {
                 done(null, user);
+                isAuthenticated() === true;
             });
         } else {
             console.log("Login fail");
