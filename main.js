@@ -56,6 +56,10 @@ app.get("/index", Auth, function (req, res) {
   res.sendFile(path.join(__dirname, "/index.html"));
 });
 
+app.get("/testgame", Auth, function (req, res) {
+  res.sendFile(path.join(__dirname, "/testgame.html"));
+});
+
 app.post("/login", function (req, res) {
   login(req.body.username, req.body.password)
     .then((result) => {
