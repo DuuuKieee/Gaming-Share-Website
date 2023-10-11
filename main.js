@@ -3,7 +3,6 @@ const passport = require('passport');
 const session = require('express-session');
 const { register, login } = require("./db.js");
 const { error } = require("console");
-const { MongoClient, ServerApiVersion } = require('mongodb');
 
 const app = express();
 const path = require("path");
@@ -27,9 +26,10 @@ app.use(
 );
 
 app.use(session({
-  secret: 'mysecretkey',
-  resave: false,
-  saveUninitialized: true
+  resave: true,
+  saveUninitialized: true,
+  secret: '1_4m_h4ck3r',
+  cookie: { maxAge: 60000 }
 }));
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -39,7 +39,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 function Auth(req, res, next) {
-  if (req.isAuthenticated()) {
+  if (req.session.User && req.session.User.islogin) {
     return next();
   } else {
     res.redirect('/login');
@@ -60,12 +60,25 @@ app.get("/success", Auth, function (req, res) {
 });
 
 app.post("/login", function (req, res) {
-  if (login(req.body.username, req.body.password) === true) {
-    return res.sendFile(path.join(__dirname, "/success.html"));
-  }
-  else {
-    return res.redirect('/login')
-  }
+  login(req.body.username, req.body.password)
+    .then((result) => {
+      if (result === true) {
+        console.log("return success");
+        req.session.User = {
+          username: req.body.username,
+          islogin: true,
+          like: '4550'
+        }
+        res.redirect('/success');
+      } else {
+        console.log("sai");
+        return res.redirect('/login');
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      return res.redirect('/login');
+    });
 });
 
 app.get("/register", function (req, res) {
@@ -73,16 +86,19 @@ app.get("/register", function (req, res) {
 });
 
 app.post("/register", function (req, res) {
-
-  if (register(req.body.email, req.body.username, req.body.password, req.body.password_repeat) === true) {
-    console.log(register(req.body.email, req.body.username, req.body.password, req.body.password_repeat));
-    return res.redirect('/login');
-
-  }
-  else {
-    console.log(register(req.body.email, req.body.username, req.body.password, req.body.password_repeat));
-    return res.redirect('/register');
-  }
+  register(req.body.email, req.body.username, req.body.password, req.body.password_repeat)
+    .then((result) => {
+      if (result === true) {
+        return res.redirect('/login');
+      } else {
+        console.log("sai");
+        return res.redirect('/register');
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      return res.redirect('/register');
+    });
 });
 
 app.listen(port, () => {

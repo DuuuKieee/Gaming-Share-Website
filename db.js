@@ -37,18 +37,16 @@ function isValidPassword(password, email) {
         console.log('pass can it nhat 1 chu cai viet hoa va do dai tu 8 den 16')
         return false;
     }
-    // return false;
 }
 
 
 
-function register(_email, _username, _password, _password_repeat) {
-    // return false;
+async function register(_email, _username, _password, _password_repeat) {
     if (_password != _password_repeat) {
+        console.log("pass khong giong nhau");
         return false;
     }
     if (isValidEmail(_email) === false) {
-        console.log("email sai");
         return false;
     }
     if (isValidPassword(_password === false)) {
@@ -57,7 +55,7 @@ function register(_email, _username, _password, _password_repeat) {
     }
     var query = { username: _username };
     try {
-        var queryResult = collection.find(query).toArray();
+        var queryResult = await collection.find(query).toArray();
         if (queryResult.length > 0) {
             console.log("User da ton tai");
             return false;
@@ -71,16 +69,16 @@ function register(_email, _username, _password, _password_repeat) {
             ];
 
             try {
-                const insertManyResult = collection.insertMany(recipes);
-                console.log(`${insertManyResult.insertedCount} dang ky dc roi nek.\n`);
+                const insertManyResult = await collection.insertMany(recipes);
+                console.log(`${insertManyResult.insertedCount} Register successful.\n`);
                 return true;
             } catch (err) {
-                console.log(`Something went wrong trying to perform the login: ${err}\n`);
+                console.log(`Co gi do sai sai: ${err}\n`);
                 return false;
             }
         }
     } catch (err) {
-        console.log(`Something went wrong trying to perform the login: ${err}\n`);
+        console.log(`Co gi do sai sai ${err}\n`);
     }
 }
 
@@ -98,9 +96,10 @@ async function login(_username, _password) {
             return true;
         } else {
             console.log("Login fail");
+            return false;
         }
     } catch (err) {
-        console.error(`Something went wrong trying to perform the login: ${err}\n`);
+        console.error(`Co gi do sai sai: ${err}\n`);
     }
 }
 
