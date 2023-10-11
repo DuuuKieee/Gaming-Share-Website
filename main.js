@@ -60,8 +60,12 @@ app.get("/success", Auth, function (req, res) {
 });
 
 app.post("/login", function (req, res) {
-  login(req.body.username, req.body.password);
-  res.sendFile(path.join(__dirname, "/success.html"));
+  if (login(req.body.username, req.body.password) === true) {
+    return res.sendFile(path.join(__dirname, "/success.html"));
+  }
+  else {
+    return res.redirect('/login')
+  }
 });
 
 app.get("/register", function (req, res) {
@@ -76,7 +80,6 @@ app.post("/register", function (req, res) {
 
   }
   else {
-    console.log("sai");
     console.log(register(req.body.email, req.body.username, req.body.password, req.body.password_repeat));
     return res.redirect('/register');
   }
