@@ -89,10 +89,6 @@ async function login(_username, _password) {
         var queryResult = await collection.find(query).toArray();
         if (queryResult.length > 0) {
             console.log("Login successful");
-            // passport.serializeUser((user, done) => {
-            //     done(null, user);
-            //     isAuthenticated() === true;
-            // });
             return true;
         } else {
             console.log("Login fail");
