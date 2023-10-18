@@ -2,7 +2,6 @@ const express = require("express");
 const passport = require('passport');
 const session = require('express-session');
 const { register, login } = require("./db.js");
-const { error } = require("console");
 
 const app = express();
 const path = require("path");
@@ -46,15 +45,15 @@ function Auth(req, res, next) {
 
 
 app.get("/", function (req, res) {
-  res.sendFile(path.join(__dirname, "/main.html"));
+  res.sendFile(path.join(__dirname, "/index.html"));
 });
 
 app.get("/login", function (req, res) {
   res.sendFile(path.join(__dirname, "/login.html"));
 });
 
-app.get("/index", Auth, function (req, res) {
-  res.sendFile(path.join(__dirname, "/index.html"));
+app.get("/main", Auth, function (req, res) {
+  res.sendFile(path.join(__dirname, "/main.html"));
 });
 
 app.get("/testgame", Auth, function (req, res) {
@@ -71,7 +70,7 @@ app.post("/login", function (req, res) {
           islogin: true,
           like: '4550'
         }
-        res.redirect('/index');
+        res.redirect('/main');
       } else {
         console.log("sai");
         return res.redirect('/login');
