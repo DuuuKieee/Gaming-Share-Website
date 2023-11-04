@@ -1,3 +1,4 @@
+const evn = require("dotenv").config();
 const express = require("express");
 const passport = require('passport');
 const session = require('express-session');
@@ -7,6 +8,7 @@ const app = express();
 const path = require("path");
 const port = 8000;
 const bodyParser = require('body-parser');
+require("dotenv").config();
 
 app.use(
   express.static(path.join(__dirname, "/public"), {
@@ -25,7 +27,7 @@ app.use(
 app.use(session({
   resave: true,
   saveUninitialized: true,
-  secret: '1_4m_h4ck3r',
+  secret: process.env.SESSION_SECRET,
   cookie: { maxAge: 60000 }
 }));
 
@@ -54,10 +56,6 @@ app.get("/login", function (req, res) {
 
 app.get("/main", Auth, function (req, res) {
   res.sendFile(path.join(__dirname, "/main.html"));
-});
-
-app.get("/testgame", Auth, function (req, res) {
-  res.sendFile(path.join(__dirname, "/testgame.html"));
 });
 
 app.post("/login", function (req, res) {
