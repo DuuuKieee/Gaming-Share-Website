@@ -1,0 +1,60 @@
+.uploadContent{
+    margin: 0;
+    width: 80%;
+    height: 100%;
+    overflow: auto;
+    justify-content: center;
+    border: 2px solid #000;
+    border-radius: 20px;
+    background-color: var(--bgColor);
+
+    .uploadBody{
+        width: 100%;
+        height: 100%;
+        padding: 10px;
+        justify-content: center; 
+        align-items: center; 
+
+        .UploadTittle{
+            width: 100%;
+            align-items: center;
+            margin: 0;
+            text-align: center;
+            color: var(--titleText);
+            font-size: var(--h2FontSize);
+        }
+        .upload{
+            width: 100%;
+            height: 100%;
+            gap: 2rem;
+            justify-content: center;
+            text-align: start;
+
+            h3{
+                font-size: var(--h3FontSize);
+            }
+            .Button{
+                gap: 1rem;
+                padding: 0;
+                width: 70px;
+                height: 70px;
+                background-color: var(--bgColor);
+                border-radius: 5px;
+                color: var(--textColor);
+                justify-content: center; 
+                align-items: center; 
+                .UploadButton{
+                    width: 100%;
+                    height: 100%;
+                    padding: .5rem;
+                    &:hover{
+                        cursor: pointer;
+                        background-color: #FFD966;
+                        color: var(--white-color);
+                    }
+                }
+            }
+        }
+        
+    }
+}

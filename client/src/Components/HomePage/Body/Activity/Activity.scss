@@ -1,0 +1,62 @@
+:root{
+    --PrimaryColor: #4F200D;
+    --HoverColor: #F4A460;
+    --orange: #FF7F00;
+    --white-color: white;
+    --black-color: black;
+    --inputColor:hsl(330,12%,97%);
+    --textColor:hsl(240, 1%,48%);
+    --bgColor:#FFF9B0;
+    --greyText: rgb(190,190,190);
+    --titleText: #CF0A0A;
+    --bodyBgColor: #FFD384;
+  
+    --biggest-font-size: 2.5rem;
+    --h1FontSize: 1.5rem;
+    --h2FontSize: 1.25rem;
+    --h3FontSize: 1rem; 
+    --normalFontSize: .938rem;
+    --smallFontSize: .813rem;
+    --smallestFontSize: .75rem;
+}
+
+.Body{
+    background:var(--bodyBgColor);
+    padding: 2rem;
+    .GameBoxes{
+        width: 100%;
+        align-items: center;
+        gap: 2rem;
+        .GameBox{
+            background: var(--bgColor);
+            margin: auto;
+            width: 70%;
+            height: 200px;
+            cursor:pointer;
+            &:hover{
+                transform: scale(1.2);
+            }
+            border-radius: 10px;
+            padding: 0;
+            .GameIcon{
+                padding: .5rem .5rem 0;
+                width: 200px;
+                height: 200px;
+            }
+            a{
+                display: flex;
+                width: 100%;
+                height: 100%;
+                align-items: center;
+            }
+
+            p{
+                padding-left: .2rem ;
+                font-size: var(--normalFontSize);
+                color: var(--titleText);
+                
+            }
+        }
+    }
+    
+}

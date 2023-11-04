@@ -1,0 +1,17 @@
+.mainContent{
+    width: 80%;
+    height: 100%;
+    padding: 2rem;
+    overflow: auto;
+
+    .body{
+        margin-top: 2rem;
+        gap: 2rem;
+        align-items: flex-start;
+        background-color: var(--bodyBgColor);
+        .Title{
+            font-size: var(--h1FontSize);
+            color: var(--titleText);
+        }
+    }
+}

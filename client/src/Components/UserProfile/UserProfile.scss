@@ -1,0 +1,18 @@
+.userContent{
+    width: 80%;
+    height: 100%;
+    padding: 2rem;
+    overflow: auto;
+    justify-self: center;
+
+    .bodyUser{
+        gap: 2rem;
+        align-items: flex-start;
+        .BlockContent {
+            align-self: center;
+            margin-top: 2rem;
+            gap: 2rem;
+            background-color: var(--bodyBgColor);
+        }
+    }
+}

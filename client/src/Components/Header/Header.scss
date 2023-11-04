@@ -1,0 +1,78 @@
+:root{
+    --PrimaryColor: #4F200D;
+    --HoverColor: #F4A460;
+    --orange: #FF7F00;
+    --white-color: white;
+    --black-color: black;
+    --inputColor:hsl(330,12%,97%);
+    --textColor:hsl(240, 1%,48%);
+    --bgColor:#FFF9B0;
+    --greyText: rgb(190,190,190);
+    --titleText: #CF0A0A;
+    --bodyBgColor: #FFD384;
+  
+    --biggest-font-size: 2.5rem;
+    --h1FontSize: 1.5rem;
+    --h2FontSize: 1.25rem;
+    --h3FontSize: 1rem; 
+    --normalFontSize: .938rem;
+    --smallFontSize: .813rem;
+    --smallestFontSize: .75rem;
+}
+
+.top{
+    .Header{
+        justify-content: space-between;
+        
+        .Title{
+            h1{
+                font-size: var(--h1FontSize);
+                color: var(--titleText);
+                font-weight: 700;
+            }
+            h3{
+                font-size: var(--normalFontSize);
+                color: var(--titleText);
+                font-weight: 500;
+            }
+        }
+        
+        .SearchBar{
+            padding: 1rem 2rem;
+            background: var(--bgColor);
+            border-radius: 5px;
+            gap: 1rem;
+            box-shadow: 0 2px 4px var(--orange);
+            width: 40%;
+            height: 30px;
+
+            input{
+                border: none;
+                outline: none;
+                background: none;
+            }
+
+            .icon{
+                color: var(--textColor);
+
+                &:hover{
+                    cursor: pointer;
+                    color: var(--PrimaryColor);
+                }
+            }
+        }
+    }
+
+    .TitleImg{
+        padding: 2rem;
+        border: 3px solid var(--bodyBgColor);
+        border-radius: 20px;
+        img{
+            padding: 0;
+            width: 100%;
+            height: 30%;
+            align-items: center;
+            border-radius: 20px;
+        }
+    }
+}

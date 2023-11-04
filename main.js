@@ -49,7 +49,9 @@ function Auth(req, res, next) {
 app.get("/", function (req, res) {
   res.sendFile(path.join(__dirname, "/index.html"));
 });
-
+app.get('/api/test', (req, res) => {
+  res.json({ message: 'I am a message from Server!' });
+})
 app.get("/login", function (req, res) {
   res.sendFile(path.join(__dirname, "/login.html"));
 });
