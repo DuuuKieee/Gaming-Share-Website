@@ -1,0 +1,1 @@
+{"version":3,"file":"unity-component.d.ts","sourceRoot":"","sources":["../../source/components/unity-component.ts"],"names":[],"mappings":"AACA,OAAO,EAAsB,yBAAyB,EAAE,MAAM,OAAO,CAAC;AAKtE,OAAO,EAAE,UAAU,EAAE,MAAM,sBAAsB,CAAC;AAElD;;GAEG;AACH,QAAA,MAAM,KAAK,EAAE,yBAAyB,CACpC,UAAU,GAAG,KAAK,CAAC,aAAa,CAAC,iBAAiB,CAAC,CAgEpD,CAAC;AAEF,OAAO,EAAE,KAAK,EAAE,CAAC"}

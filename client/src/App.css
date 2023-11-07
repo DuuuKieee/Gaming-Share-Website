@@ -1,22 +1,109 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;1,300;1,400&display=swap');
+.body{
+  background-color: var(--bgColor);
 }
 
-.App-logo {
-  height: 40vmin;
+*{
+  padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  transition: .3s ease;
+
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+a{
+  text-decoration: none;
+}
+
+li{
+  list-style: none;
+}
+
+.icon{
+  font-size: var(--h2FontSize);
+}
+
+img{
+  width: 20%;
+  height: auto;
+}
+
+.flex{
   display: flex;
-  flex-direction: column;
+  align-items: center;
+}
+
+.grid{
+    display: grid;
+    align-items: center;
+}
+
+.btn{
+  border:none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px var(--inputColor);
+  padding: .8rem 1rem;
+  color: var(--textColor);
+}
+
+.btn .icon {
+  margin-left: .5rem;
+}
+
+.btn:hover{
+  background-color: var(--orange);
+  color: var(--PrimaryColor);
+}
+
+body{
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  margin: auto;
+  padding: 1rem;
 }
 
-.App-link {
-  color: #09d3ac;
+.container{
+  position: relative;
+  width: 98vw;
+  height: 95vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bodyBgColor);
+  overflow: hidden;
+  border-radius: 1rem;
+  box-shadow: 2px 3px 8px gray;
+}
+
+:root{
+  --PrimaryColor: #4F200D;
+  --HoverColor: #F4A460;
+  --orange: #FF7F00;
+  --white-color: white;
+  --black-color: black;
+  --inputColor:hsl(330,12%,97%);
+  --textColor:hsl(240, 1%,48%);
+  --bgColor:#FFF9B0;
+  --greyText: rgb(190,190,190);
+  --titleText: #CF0A0A;
+  --bodyBgColor: #FFD384;
+
+  --biggest-font-size: 2.5rem;
+  --h1FontSize: 1.5rem;
+  --h2FontSize: 1.25rem;
+  --h3FontSize: 1rem; 
+  --normalFontSize: .938rem;
+  --smallFontSize: .813rem;
+  --smallestFontSize: .75rem;
+}
+
+.noneColorLink{
+  color: var(--black-color);
+  text-decoration: none;
+  flex-direction: column;
+  text-align: center;
 }

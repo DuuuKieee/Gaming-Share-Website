@@ -3,14 +3,14 @@ const express = require("express");
 const passport = require('passport');
 const session = require('express-session');
 const { register, login } = require("./db.js");
-
+var cors = require("cors");
 const app = express();
 const path = require("path");
 const port = 8000;
 const bodyParser = require('body-parser');
 
 require("dotenv").config();
-
+app.use(cors());
 app.use(
   express.static(path.join(__dirname, "/public"), {
     setHeaders: function (res, path) {
@@ -53,6 +53,21 @@ app.get("/", function (req, res) {
 app.get('/api/test', (req, res) => {
   res.json({ message: 'I am a message from Server!' });
 })
+app.post('/api/register', (req, res) => {
+  register(req.body.email, req.body.username, req.body.password, req.body.password_repeat)
+    .then((result) => {
+      if (result === true) {
+        return res.status(200);
+      } else {
+        console.log("sai");
+        return res.json({ message: 'DangKyThatBai' });
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      return res.json({ message: 'DangKyLoi' });
+    });
+});
 app.get("/login", function (req, res) {
   res.sendFile(path.join(__dirname, "/login.html"));
 });
