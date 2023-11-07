@@ -8,7 +8,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    axios.get('/api/test')
+    axios.get('http://localhost:8000/api/test')
       .then(result => this.setState({ message: result.data.message }))
   }
 
