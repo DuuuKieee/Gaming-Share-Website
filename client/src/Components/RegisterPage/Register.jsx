@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { redirect } from "react-router-dom";
+import "./Register.scss";
 
 const Register = ({ userLogIn, setUserLogIn }) => {
   const [username, setUsername] = useState("");
