@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Register.scss";
 
 const Register = ({ userLogIn, setUserLogIn }) => {
@@ -7,7 +7,7 @@ const Register = ({ userLogIn, setUserLogIn }) => {
   const [password, setPassword] = useState("");
   const [password_repeat, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
-
+  const navigate = useNavigate();
   const handleRegister = async (event) => {
     event.preventDefault();
 
@@ -26,7 +26,7 @@ const Register = ({ userLogIn, setUserLogIn }) => {
       });
       if (response.ok) {
         // Trong này sẽ redirect login
-
+        navigate("/log-in");
         
       } else {
         throw new Error("Request failed with status: " + response.status);
