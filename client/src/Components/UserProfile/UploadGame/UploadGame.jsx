@@ -15,7 +15,6 @@ const UploadGame = () => {
                     <h3>Upload game của bạn bằng file .zip</h3>
                 </div>
             </div>
-            
         </div>
         )
 }

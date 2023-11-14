@@ -1,10 +1,12 @@
 import React, {useState} from "react";
 import "./Login.scss";
-import ReactDOM from 'react-dom';
+import { useNavigate } from "react-router-dom";
 
 const LogIn =({userLogIn, setUserLogIn}) => {
     const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
     const handleLogin = async (event) => {
         event.preventDefault();
         fetch("http://localhost:8000/api/login", {
@@ -21,6 +23,7 @@ const LogIn =({userLogIn, setUserLogIn}) => {
             if(response.status===200)
             {
               //Open successful pop ups
+              navigate("/");
             }
           }).catch(error => {
             console.error(error);

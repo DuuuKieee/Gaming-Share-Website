@@ -14,8 +14,8 @@ const GamePage = () => {
     <div className="gamePageContent">
       <div className="bodyGame">
         <p>Game X</p>
-        <div className="GameWindow">
-          <Unity unityProvider={unityProvider} />
+        <div >
+          <Unity className="GameWindow" unityProvider={unityProvider} />
         </div>
       </div>
     </div>

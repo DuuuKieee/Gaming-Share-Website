@@ -23,7 +23,7 @@
         height: calc(90% - 2rem); /* Subtract the padding from the height */
         overflow: auto;
         justify-self: center;
-        background-color: aquamarine;
+        background-color: var(--bgColor);
       }
     }
   }

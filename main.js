@@ -94,6 +94,25 @@ app.post('/api/login', (req, res) => {
     });
 });
 
+app.post('/api/upload', (req, res) => {
+  gameUpload(req.body.gamename, req.body.username)
+    .then((result) => {
+      if (result === true) {
+        res.status(200).json({
+          message: "Access Token"
+        });
+      } else {
+        console.log("sai");
+        // res.json({ message: 'DangKyThatBai' });
+        res.status(400).json({message: 'DangKyThatBai'});
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.json({ message: 'DangKyLoi' });
+    });
+});
+
 app.get("/main", Auth, function (req, res) {
   res.sendFile(path.join(__dirname, "/main.html"));
 });
