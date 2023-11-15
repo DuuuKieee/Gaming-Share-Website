@@ -27,8 +27,6 @@ app.use(
   })
 );
 
-const accessTokensecret = process.env.ACCESS_SECRET;
-const refreshTokensecret = process.env.REFRESH_SECRET;
 
 app.use(session({
   resave: true,
@@ -78,11 +76,11 @@ app.post('/api/register', (req, res) => {
 });
 
 const generalAccessToken = (data) => {
-  const accesstoken = jwt.sign({ data }, accessTokensecret, { expiresIn: "30m" });
+  const accesstoken = jwt.sign({ data }, process.env.ACCESS_SECRET, { expiresIn: "30m" });
   return accesstoken;
 }
 const generalRefreshToken = (data) => {
-  const refreshtoken = jwt.sign({ data }, refreshTokensecret, { expiresIn: "30d" });
+  const refreshtoken = jwt.sign({ data }, process.env.REFRESH_SECRET, { expiresIn: "30d" });
   return refreshtoken;
 }
 app.get("/login", function (req, res) {
@@ -93,8 +91,8 @@ app.post('/api/login', (req, res) => {
   login(req.body.username, req.body.password)
     .then((result) => {
       if (result === true) {
-        const accesstoken = generalAccessToken({ username: user.username, role: user.role })
-        const refreshtoken = generalRefreshToken({ username: user.username, role: user.role })
+        const accesstoken = generalAccessToken({ username: req.body.username, role: 'user' })
+        const refreshtoken = generalRefreshToken({ username: req.body.username, role: 'user' })
         res.cookie("token", accesstoken, {
           httpOnly: true,
         });
@@ -102,7 +100,7 @@ app.post('/api/login', (req, res) => {
           accesstoken: accesstoken,
           refreshtoken: refreshtoken
         });
-
+        console.log("accesstoken:", accesstoken);
       } else {
         console.log("sai");
         // res.json({ message: 'DangKyThatBai' });
@@ -143,11 +141,15 @@ app.post("/login", function (req, res) {
     .then((result) => {
       if (result === true) {
         console.log("return success");
-        req.session.User = {
-          username: req.body.username,
-          islogin: true,
-          like: '4550'
-        }
+        const accesstoken = generalAccessToken({ username: user.username, role: user.role })
+        const refreshtoken = generalRefreshToken({ username: user.username, role: user.role })
+        res.cookie("token", accesstoken, {
+          httpOnly: true,
+        });
+        res.status(200).json({
+          accesstoken: accesstoken,
+          refreshtoken: refreshtoken
+        });
         res.redirect('/main');
       } else {
         console.log("sai");
@@ -178,26 +180,6 @@ app.post("/register", function (req, res) {
       console.error(error);
       return res.redirect('/register');
     });
-});
-
-
-
-
-app.post('/login', (req, res) => {
-  const { username, pass } = req.body;
-
-  dbQuery.loginUser(username, pass, (err, user) => {
-    if (err) {
-      return res.status(500).send(err.message);
-    }
-
-    if (user) {
-      // Tạo JWT token và gửi về cho người dùng
-
-    } else {
-      res.status(401).send('Tên đăng nhập hoặc mật khẩu không đúng!');
-    }
-  });
 });
 
 app.listen(port, () => {
