@@ -6,7 +6,7 @@ import { BiDislike } from "react-icons/bi";
 const GameList =({ imgSrc, gameName, description } ) =>{
     return (
         <div className="GameBox flex">
-            <a href="Game-X" target="_self">
+            <a href={`/${gameName}`} target="_self">
                 <img src={imgSrc} className="GameIcon"></img>
                     <div className="GameContent grid">
                         <p>{gameName}</p>

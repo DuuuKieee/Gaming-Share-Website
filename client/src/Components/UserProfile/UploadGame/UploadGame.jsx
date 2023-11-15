@@ -1,6 +1,9 @@
 import React from "react";
 import "./UploadGame.scss";
 import {HiOutlineUpload} from "react-icons/hi";
+import Popup from "reactjs-popup";
+import GameUploadForm from "./Popup/GameUploadForm";
+
 const UploadGame = () => {
     return (
         <div className="uploadContent">
@@ -9,9 +12,12 @@ const UploadGame = () => {
                     Upload game
                 </h2>
                 <div className="upload flex">
-                    <button className="Button">
+                <Popup modal trigger={<button className="Button">
                         <HiOutlineUpload className="UploadButton"/> 
-                    </button>
+                    </button>}>
+                    <GameUploadForm />
+                </Popup>
+                    
                     <h3>Upload game của bạn bằng file .zip</h3>
                 </div>
             </div>
