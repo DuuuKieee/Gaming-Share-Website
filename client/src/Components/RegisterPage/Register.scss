@@ -93,24 +93,27 @@
         justify-content: center;
         align-items: center;
         gap: 1rem;
-        .p{
-            text-align: center;
-            font-size: var(--biggest-font-size);
-            color: var(--white-color); 
-        }
+        backdrop-filter: blur(2px);
         .popup-content {
-            background: #fff;
+            text-align: center;
+            background: var(--bgColor);
+            width: 20%;
+            height: 20%;
             padding: 20px;
-            border-radius: 8px;
+            font-size: 10px;
+            border: 2px solid #000;
+            border-radius: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            color: var(--titleText);
         }
         .btn{
-            width: 50%;
+            width: 60%;
             height: 50px;
-            justify-self: center;
+            margin: 10% 20%;
             background-color: var(--bgColor);
             border: 2px solid #000;
             border-radius: 20px;
+            font-weight: bold;
             &:hover{
                 cursor: pointer;
                 background-color: var(--bodyBgColor);

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Register.scss";
+import Popup from "reactjs-popup";
 
 const Register = ({ userLogIn, setUserLogIn }) => {
   const [username, setUsername] = useState("");
@@ -98,7 +99,7 @@ const Register = ({ userLogIn, setUserLogIn }) => {
       {isSuccess && (
         <div className="successPopup">
           <div className="popup-content">
-            <p>Register Successful!</p>
+            <h1>Register Successful!</h1>
             <button class = "btn" onClick={() => {
               closePopup();
               // navigate back to /log-in
