@@ -1,0 +1,69 @@
+.GameBox{
+    background: var(--bgColor);
+    margin: auto;
+    width: 70%;
+    height: 200px;
+    cursor:pointer;
+    &:hover{
+        transform: scale(1.2);
+    }
+    border-radius: 10px;
+    padding: 0;
+    .GameIcon{
+        padding: .5rem .5rem 0;
+        width: 200px;
+        height: 200px;
+    }
+    a{
+        display: flex;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+    }
+
+    p{
+        padding-left: .2rem ;
+        font-size: var(--normalFontSize);
+        color: var(--titleText);
+        
+    }
+    .emo{
+        width: 100%;
+        height: 100%;
+        .like{
+            font-size: 40px;
+            margin-right: 10px;
+            gap: 1rem;
+            padding: 0;
+            width: 50px;
+            border: none;
+            height: 50px;
+            background-color: var(--bgColor);
+            color: var(--textColor);
+            justify-self: center;
+            &:hover{
+                transform: scale(1.2);
+                cursor: pointer;
+                color: red;
+            }
+        }
+        .dislike{
+            margin-right: 10px;
+            font-size: 40px;
+            gap: 1rem;
+            padding: 0;
+            width: 50px;
+            height: 50px;
+            border: none;
+            background-color: var(--bgColor);
+            color: var(--textColor);
+            justify-self: center;
+            &:hover{
+                transform: scale(1.2);
+                cursor: pointer;
+                color: blue;
+            }
+        }
+    }
+}
+
