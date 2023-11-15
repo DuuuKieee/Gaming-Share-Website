@@ -61,19 +61,60 @@ app.post('/api/register', (req, res) => {
   register(req.body.email, req.body.username, req.body.password, req.body.password_repeat)
     .then((result) => {
       if (result === true) {
-        return res.status(200);
+        res.status(200).json({
+          message: "test"
+        });
       } else {
         console.log("sai");
-        return res.json({ message: 'DangKyThatBai' });
+        // res.json({ message: 'DangKyThatBai' });
+        res.status(400).json({message: 'DangKyThatBai'});
       }
     })
     .catch((error) => {
       console.error(error);
-      return res.json({ message: 'DangKyLoi' });
+      res.json({ message: 'DangKyLoi' });
     });
 });
 app.get("/login", function (req, res) {
   res.sendFile(path.join(__dirname, "/login.html"));
+});
+
+app.post('/api/login', (req, res) => {
+  login(req.body.username, req.body.password)
+    .then((result) => {
+      if (result === true) {
+        res.status(200).json({
+          message: "Access Token"
+        });
+      } else {
+        console.log("sai");
+        // res.json({ message: 'DangKyThatBai' });
+        res.status(400).json({message: 'DangKyThatBai'});
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.json({ message: 'DangKyLoi' });
+    });
+});
+
+app.post('/api/upload', (req, res) => {
+  gameUpload(req.body.gamename, req.body.username)
+    .then((result) => {
+      if (result === true) {
+        res.status(200).json({
+          message: "Access Token"
+        });
+      } else {
+        console.log("sai");
+        // res.json({ message: 'DangKyThatBai' });
+        res.status(400).json({message: 'DangKyThatBai'});
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.json({ message: 'DangKyLoi' });
+    });
 });
 
 app.get("/main", Auth, function (req, res) {

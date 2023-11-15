@@ -1,17 +1,27 @@
 import React, { useState } from "react";
-import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import "./Register.scss";
 
 const Register = ({ userLogIn, setUserLogIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [password_repeat, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+  const [isSuccess, setSuccess] = useState(false);
+  const openPopup = () => {
+    setSuccess(true);
+  };
+
+  const closePopup = () => {
+    setSuccess(false);
+  };
 
   const handleRegister = async (event) => {
     event.preventDefault();
 
-    try {
-      const response = await fetch("http://localhost:8000/api/register", {
+    
+    fetch("http://localhost:8000/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -22,18 +32,16 @@ const Register = ({ userLogIn, setUserLogIn }) => {
           password_repeat,
           email,
         }),
-      });
-      if (response.ok) {
-        // Trong này sẽ redirect login
-
-        
-      } else {
-        throw new Error("Request failed with status: " + response.status);
-      }
-    } catch (error) {
-      console.error(error);
-      // Handle the error if needed
-    }
+      }).then((response) => {
+        response.json();
+        if(response.status===200)
+        {
+          //Open successful pop ups
+          openPopup();
+        }
+      }).catch(error => {
+        console.error(error);
+      })
   };
 
   return (
@@ -87,6 +95,18 @@ const Register = ({ userLogIn, setUserLogIn }) => {
           </div>
         </form>
       </div>
+      {isSuccess && (
+        <div className="successPopup">
+          <div className="popup-content">
+            <p>Register Successful!</p>
+            <button class = "btn" onClick={() => {
+              closePopup();
+              // navigate back to /log-in
+              navigate("/log-in");  
+            }}>Back to Log in</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

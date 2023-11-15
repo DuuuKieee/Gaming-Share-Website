@@ -11,6 +11,8 @@ const dbName = "DB";
 const collectionName = "User";
 const database = client.db(dbName);
 const collection = database.collection(collectionName);
+const collectionGameName = "GameData";
+const gamecollection = database.collection(collectionGameName);
 const passport = require('passport');
 const crypto = require('crypto');
 const { count } = require('console');
@@ -97,5 +99,22 @@ async function login(_username, _password) {
         console.error(`Co gi do sai sai: ${err}\n`);
     }
 }
+
+async function gameUpload(_gamename, _username) {
+    const recipes = [
+      {
+        name: _gamename,
+        author: _username,
+        date: new Date()
+      },
+    ];
+    
+    try {
+      const insertManyResult = await gamecollection.insertMany(recipes);
+      console.log(`${insertManyResult.insertedCount} documents successfully inserted.\n`);
+    } catch (err) {
+      console.error(`Something went wrong trying to insert the new documents: ${err}\n`);
+    }
+  }
 
 module.exports = { register, login };
