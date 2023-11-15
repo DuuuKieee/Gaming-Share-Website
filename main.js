@@ -1,9 +1,10 @@
 const evn = require("dotenv").config();
 const express = require("express");
 const passport = require('passport');
+const jwt = require('jsonwebtoken')
 const session = require('express-session');
 const { register, login } = require("./db.js");
-const { jwtMiddleware, convertJWTToJS, sign } = require("/jwt.js")
+const { jwtMiddleware, convertJWTToJS, sign } = require("./jwt.js")
 var cors = require("cors");
 const app = express();
 const path = require("path");
@@ -29,12 +30,12 @@ app.use(
 const accessTokensecret = process.env.ACCESS_SECRET;
 const refreshTokensecret = process.env.REFRESH_SECRET;
 
-// app.use(session({
-//   resave: true,
-//   saveUninitialized: true,
-//   secret: process.env.SESSION_SECRET,
-//   cookie: { maxAge: 60000 }
-// }));
+app.use(session({
+  resave: true,
+  saveUninitialized: true,
+  secret: process.env.SESSION_SECRET,
+  cookie: { maxAge: 60000 }
+}));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json())
@@ -42,13 +43,13 @@ app.use(express.urlencoded({ extended: false }))
 app.use(passport.initialize());
 app.use(passport.session());
 
-// function Auth(req, res, next) {
-//   if (req.session.User && req.session.User.islogin) {
-//     return next();
-//   } else {
-//     res.redirect('/login');
-//   }
-// }
+function Auth(req, res, next) {
+  if (req.session.User && req.session.User.islogin) {
+    return next();
+  } else {
+    res.redirect('/login');
+  }
+}
 
 
 app.get("/", function (req, res) {
@@ -67,7 +68,7 @@ app.post('/api/register', (req, res) => {
       } else {
         console.log("sai");
         // res.json({ message: 'DangKyThatBai' });
-        res.status(400).json({message: 'DangKyThatBai'});
+        res.status(400).json({ message: 'DangKyThatBai' });
       }
     })
     .catch((error) => {
@@ -75,6 +76,15 @@ app.post('/api/register', (req, res) => {
       res.json({ message: 'DangKyLoi' });
     });
 });
+
+const generalAccessToken = (data) => {
+  const accesstoken = jwt.sign({ data }, accessTokensecret, { expiresIn: "30m" });
+  return accesstoken;
+}
+const generalRefreshToken = (data) => {
+  const refreshtoken = jwt.sign({ data }, refreshTokensecret, { expiresIn: "30d" });
+  return refreshtoken;
+}
 app.get("/login", function (req, res) {
   res.sendFile(path.join(__dirname, "/login.html"));
 });
@@ -83,13 +93,20 @@ app.post('/api/login', (req, res) => {
   login(req.body.username, req.body.password)
     .then((result) => {
       if (result === true) {
-        res.status(200).json({
-          message: "Access Token"
+        const accesstoken = generalAccessToken({ username: user.username, role: user.role })
+        const refreshtoken = generalRefreshToken({ username: user.username, role: user.role })
+        res.cookie("token", accesstoken, {
+          httpOnly: true,
         });
+        res.status(200).json({
+          accesstoken: accesstoken,
+          refreshtoken: refreshtoken
+        });
+
       } else {
         console.log("sai");
         // res.json({ message: 'DangKyThatBai' });
-        res.status(400).json({message: 'DangKyThatBai'});
+        res.status(400).json({ message: 'DangKyThatBai' });
       }
     })
     .catch((error) => {
@@ -108,7 +125,7 @@ app.post('/api/upload', (req, res) => {
       } else {
         console.log("sai");
         // res.json({ message: 'DangKyThatBai' });
-        res.status(400).json({message: 'DangKyThatBai'});
+        res.status(400).json({ message: 'DangKyThatBai' });
       }
     })
     .catch((error) => {
@@ -164,14 +181,7 @@ app.post("/register", function (req, res) {
 });
 
 
-const generalAccessToken = (data) => {
-  const accesstoken = jwt.sign({ data }, accessTokensecret, { expiresIn: "30m" });
-  return accesstoken;
-}
-const generalRefreshToken = (data) => {
-  const refreshtoken = jwt.sign({ data }, refreshTokensecret, { expiresIn: "30d" });
-  return refreshtoken;
-}
+
 
 app.post('/login', (req, res) => {
   const { username, pass } = req.body;
@@ -183,14 +193,7 @@ app.post('/login', (req, res) => {
 
     if (user) {
       // Tạo JWT token và gửi về cho người dùng
-      const accesstoken = generalAccessToken({ username: user.username, role: user.role })
-      const refreshtoken = generalRefreshToken({ username: user.username, role: user.role })
-      resolve({
-        status: "OK",
-        data: {
-          accesstoken
-        }
-      })
+
     } else {
       res.status(401).send('Tên đăng nhập hoặc mật khẩu không đúng!');
     }
