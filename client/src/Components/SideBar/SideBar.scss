@@ -1,23 +1,4 @@
-:root{
-    --PrimaryColor: #4F200D;
-    --HoverColor: #4F200D;
-    --orange: #FF7F00;
-    --white-color: white;
-    --black-color: black;
-    --inputColor:hsl(330,12%,97%);
-    --textColor:hsl(240, 1%,48%);
-    --bgColor:#FFF9B0;
-    --greyText: rgb(190,190,190);
-    --titleText: #CF0A0A;
-  
-    --biggest-font-size: 2.5rem;
-    --h1FontSize: 1.5rem;
-    --h2FontSize: 1.25rem;
-    --h3FontSize: 1rem; 
-    --normalFontSize: .938rem;  
-    --smallFontSize: .813rem;
-    --smallestFontSize: .75rem;
-  }
+
 .sideBar{
     background-color:var(--bgColor);
     box-shadow: 1px 0px 4px var(--greyText);
