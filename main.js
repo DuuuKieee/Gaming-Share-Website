@@ -3,6 +3,7 @@ const express = require("express");
 const passport = require('passport');
 const session = require('express-session');
 const { register, login } = require("./db.js");
+const { jwtMiddleware, convertJWTToJS, sign } = require("/jwt.js")
 var cors = require("cors");
 const app = express();
 const path = require("path");
@@ -10,6 +11,7 @@ const port = 8000;
 const bodyParser = require('body-parser');
 
 require("dotenv").config();
+
 app.use(cors());
 app.use(
   express.static(path.join(__dirname, "/public"), {
@@ -24,13 +26,15 @@ app.use(
   })
 );
 
+const accessTokensecret = process.env.ACCESS_SECRET;
+const refreshTokensecret = process.env.REFRESH_SECRET;
 
-app.use(session({
-  resave: true,
-  saveUninitialized: true,
-  secret: process.env.SESSION_SECRET,
-  cookie: { maxAge: 60000 }
-}));
+// app.use(session({
+//   resave: true,
+//   saveUninitialized: true,
+//   secret: process.env.SESSION_SECRET,
+//   cookie: { maxAge: 60000 }
+// }));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json())
@@ -38,13 +42,13 @@ app.use(express.urlencoded({ extended: false }))
 app.use(passport.initialize());
 app.use(passport.session());
 
-function Auth(req, res, next) {
-  if (req.session.User && req.session.User.islogin) {
-    return next();
-  } else {
-    res.redirect('/login');
-  }
-}
+// function Auth(req, res, next) {
+//   if (req.session.User && req.session.User.islogin) {
+//     return next();
+//   } else {
+//     res.redirect('/login');
+//   }
+// }
 
 
 app.get("/", function (req, res) {
@@ -116,6 +120,40 @@ app.post("/register", function (req, res) {
       console.error(error);
       return res.redirect('/register');
     });
+});
+
+
+const generalAccessToken = (data) => {
+  const accesstoken = jwt.sign({ data }, accessTokensecret, { expiresIn: "30m" });
+  return accesstoken;
+}
+const generalRefreshToken = (data) => {
+  const refreshtoken = jwt.sign({ data }, refreshTokensecret, { expiresIn: "30d" });
+  return refreshtoken;
+}
+
+app.post('/login', (req, res) => {
+  const { username, pass } = req.body;
+
+  dbQuery.loginUser(username, pass, (err, user) => {
+    if (err) {
+      return res.status(500).send(err.message);
+    }
+
+    if (user) {
+      // Tạo JWT token và gửi về cho người dùng
+      const accesstoken = generalAccessToken({ username: user.username, role: user.role })
+      const refreshtoken = generalRefreshToken({ username: user.username, role: user.role })
+      resolve({
+        status: "OK",
+        data: {
+          accesstoken
+        }
+      })
+    } else {
+      res.status(401).send('Tên đăng nhập hoặc mật khẩu không đúng!');
+    }
+  });
 });
 
 app.listen(port, () => {
