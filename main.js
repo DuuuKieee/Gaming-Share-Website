@@ -7,6 +7,7 @@ const { register, login } = require("./db.js");
 const { jwtMiddleware, convertJWTToJS, sign } = require("./jwt.js")
 var cors = require("cors");
 const app = express();
+const multer = require("multer");
 const path = require("path");
 const port = 8000;
 const bodyParser = require('body-parser');
@@ -49,6 +50,42 @@ function Auth(req, res, next) {
   }
 }
 
+const fileStorageEngine = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/games"); //important this is a direct path fron our current file to storage location
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "--" + file.originalname);
+  },
+});
+
+
+// The Multer Middleware that is passed to routes that will receive income requests with file data (multipart/formdata)
+// You can create multiple middleware each with a different storage engine config so save different files in different locations on server
+const upload = multer({ storage: fileStorageEngine });
+
+// Single File Route Handler
+app.post("/upload/single", upload.single("games"), (req, res) => {
+  console.log(req.file);
+  res.send("Single FIle upload success");
+});
+
+// Multiple Files Route Handler
+app.post("/upload/multiple", upload.array("games", 4), (req, res) => {
+  const gameData = JSON.parse(req.body.gameData);
+  const gameName = gameData.gameName;
+  const fileNames = []; // Mảng để lưu tên tệp tin
+
+  req.files.forEach((file) => {
+    const fileName = file.filename; // Lấy tên tệp tin
+    fileNames.push(fileName); // Thêm tên tệp tin vào mảng
+  });
+
+  gameUpload(gameName, "testuser", fileNames); // Truyền mảng tên tệp tin vào hàm gameUpload
+  res.send("Multiple Files Upload Success");
+});
+
+
 
 app.get("/", function (req, res) {
   res.sendFile(path.join(__dirname, "/index.html"));
@@ -85,6 +122,22 @@ const generalRefreshToken = (data) => {
 }
 app.get("/login", function (req, res) {
   res.sendFile(path.join(__dirname, "/login.html"));
+});
+
+app.post('/api/playgame', async (req, res) => {
+  try {
+    playGame(req.body.gamename)
+    .then((result) => {
+      return res.json({ gameData: result });
+    })
+  } catch (error) {
+    console.error("Error while playing game:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.get("/main", Auth, function (req, res) {
+res.sendFile(path.join(__dirname, "/public/main.html"));
 });
 
 app.post('/api/login', (req, res) => {
@@ -132,55 +185,21 @@ app.post('/api/upload', (req, res) => {
     });
 });
 
-app.get("/main", Auth, function (req, res) {
-  res.sendFile(path.join(__dirname, "/main.html"));
-});
-
-app.post("/login", function (req, res) {
-  login(req.body.username, req.body.password)
-    .then((result) => {
-      if (result === true) {
-        console.log("return success");
-        const accesstoken = generalAccessToken({ username: user.username, role: user.role })
-        const refreshtoken = generalRefreshToken({ username: user.username, role: user.role })
-        res.cookie("token", accesstoken, {
-          httpOnly: true,
-        });
-        res.status(200).json({
-          accesstoken: accesstoken,
-          refreshtoken: refreshtoken
-        });
-        res.redirect('/main');
-      } else {
-        console.log("sai");
-        return res.redirect('/login');
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      return res.redirect('/login');
+app.post("/api/getuser", (req, res) => {
+  getUser(req.body.username)
+  .then((result) => {
+    res.status(200).json({
+      username: result.username,
+      role: result.role,
+      game: result.game,
     });
+  }).catch((error) => {
+    console.error(error);
+    res.json({ message: 'DangKyLoi' });
+  });
 });
 
-app.get("/register", function (req, res) {
-  res.sendFile(path.join(__dirname, "/register.html"))
-});
 
-app.post("/register", function (req, res) {
-  register(req.body.email, req.body.username, req.body.password, req.body.password_repeat)
-    .then((result) => {
-      if (result === true) {
-        return res.redirect('/login');
-      } else {
-        console.log("sai");
-        return res.redirect('/register');
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      return res.redirect('/register');
-    });
-});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
