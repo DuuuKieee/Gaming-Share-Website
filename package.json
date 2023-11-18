@@ -5,16 +5,21 @@
     "concurrently": "^4.1.2",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "decompress": "^4.2.1",
     "dotenv": "^16.3.1",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
+    "express-fileupload": "^1.4.2",
     "express-session": "^1.17.3",
+    "express-static-zip": "^0.2.3",
     "html": "^1.0.0",
+    "jszip": "^3.10.1",
     "mongodb": "^6.1.0",
     "multer": "^1.4.5-lts.1",
     "open": "^9.1.0",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
+    "path": "^0.12.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
@@ -33,5 +38,8 @@
     "server": "node main.js --env-file=.env",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
   }
 }

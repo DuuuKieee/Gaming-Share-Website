@@ -2,12 +2,19 @@ const evn = require("dotenv").config();
 const express = require("express");
 const passport = require('passport');
 const session = require('express-session');
-const { register, login } = require("./db.js");
+const { register, login, gameUpload,playGame } = require("./db.js");
 var cors = require("cors");
 const app = express();
 const path = require("path");
 const port = 8000;
 const bodyParser = require('body-parser');
+const multer = require("multer");
+const fileUpload = require("express-fileupload");
+
+
+const filesPayloadExists = require('./middleware/filesPayloadExists');
+const fileExtLimiter = require('./middleware/fileExtLimiter');
+const fileSizeLimiter = require('./middleware/fileSizeLimiter');
 
 require("dotenv").config();
 app.use(cors());
@@ -45,6 +52,41 @@ function Auth(req, res, next) {
     res.redirect('/login');
   }
 }
+
+const fileStorageEngine = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/games"); //important this is a direct path fron our current file to storage location
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "--" + file.originalname);
+  },
+});
+
+
+// The Multer Middleware that is passed to routes that will receive income requests with file data (multipart/formdata)
+// You can create multiple middleware each with a different storage engine config so save different files in different locations on server
+const upload = multer({ storage: fileStorageEngine });
+
+// Single File Route Handler
+app.post("/upload/single", upload.single("games"), (req, res) => {
+  console.log(req.file);
+  res.send("Single FIle upload success");
+});
+
+// Multiple Files Route Handler
+app.post("/upload/multiple", upload.array("games", 4), (req, res) => {
+  const gameData = JSON.parse(req.body.gameData);
+  const gameName = gameData.gameName;
+  const fileNames = []; // Mảng để lưu tên tệp tin
+
+  req.files.forEach((file) => {
+    const fileName = file.filename; // Lấy tên tệp tin
+    fileNames.push(fileName); // Thêm tên tệp tin vào mảng
+  });
+
+  gameUpload(gameName, "testuser", fileNames); // Truyền mảng tên tệp tin vào hàm gameUpload
+  res.send("Multiple Files Upload Success");
+});
 
 
 app.get("/", function (req, res) {
@@ -94,27 +136,38 @@ app.post('/api/login', (req, res) => {
     });
 });
 
-app.post('/api/upload', (req, res) => {
-  gameUpload(req.body.gamename, req.body.username)
-    .then((result) => {
-      if (result === true) {
-        res.status(200).json({
-          message: "Access Token"
-        });
-      } else {
-        console.log("sai");
-        // res.json({ message: 'DangKyThatBai' });
-        res.status(400).json({message: 'DangKyThatBai'});
-      }
+app.post('/api/upload',
+  fileUpload({ createParentPath: true }),
+  filesPayloadExists,
+  fileExtLimiter(['.js', '.unityweb' ]),
+  fileSizeLimiter,
+  (req, res) => {
+    const files = req.files
+    console.log(files)
+
+    Object.keys(files).forEach(key => {
+        const filepath = path.join(__dirname, 'files', files[key].name)
+        files[key].mv(filepath, (err) => {
+            if (err) return res.status(500).json({ status: "error", message: err })
+        })
     })
-    .catch((error) => {
-      console.error(error);
-      res.json({ message: 'DangKyLoi' });
-    });
-});
+    
+  })
+
+  app.post('/api/playgame', async (req, res) => {
+    try {
+      playGame(req.body.gamename)
+      .then((result) => {
+        return res.json({ gameData: result });
+      })
+    } catch (error) {
+      console.error("Error while playing game:", error);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
 
 app.get("/main", Auth, function (req, res) {
-  res.sendFile(path.join(__dirname, "/main.html"));
+  res.sendFile(path.join(__dirname, "/public/main.html"));
 });
 
 app.post("/login", function (req, res) {
@@ -162,3 +215,4 @@ app.post("/register", function (req, res) {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
+  

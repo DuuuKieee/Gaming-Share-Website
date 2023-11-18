@@ -100,12 +100,13 @@ async function login(_username, _password) {
     }
 }
 
-async function gameUpload(_gamename, _username) {
+async function gameUpload(_gamename, _username, dataurl) {
     const recipes = [
       {
         name: _gamename,
         author: _username,
-        date: new Date()
+        date: new Date(),
+        data:  dataurl
       },
     ];
     
@@ -117,4 +118,21 @@ async function gameUpload(_gamename, _username) {
     }
   }
 
-module.exports = { register, login };
+  async function playGame(_gamename) {
+    var query = { name: _gamename };
+    try {
+        var queryResult = await gamecollection.find(query).toArray();
+        if (queryResult.length == 1) {
+            var gameData = queryResult[0].data;
+            console.log(gameData);
+            return gameData;
+
+          } else {
+            console.log("Không tìm thấy dữ liệu của trò chơi.");
+          }
+    } catch (err) {
+        console.error(`Something went wrong trying to insert the new documents: ${err}\n`);
+      }
+  }
+
+module.exports = { register, login, gameUpload, playGame };
