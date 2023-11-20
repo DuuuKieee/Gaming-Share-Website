@@ -3,7 +3,7 @@ const express = require("express");
 const passport = require('passport');
 const jwt = require('jsonwebtoken')
 const session = require('express-session');
-const { register, login } = require("./db.js");
+const { register, login, playGame, getUser, gameUpload } = require("./db.js");
 const { jwtMiddleware, convertJWTToJS, sign } = require("./jwt.js")
 var cors = require("cors");
 const app = express();
@@ -11,10 +11,20 @@ const multer = require("multer");
 const path = require("path");
 const port = 8000;
 const bodyParser = require('body-parser');
+const fs = require('fs');
+const decompress = require("decompress");
+const { forEach } = require("jszip");
 
 require("dotenv").config();
 
 app.use(cors());
+
+const folderPath = 'public/Build'; // Đường dẫn đến thư mục
+
+app.get('/files', (req, res) => {
+});
+
+
 app.use(
   express.static(path.join(__dirname, "/public"), {
     setHeaders: function (res, path) {
@@ -67,6 +77,15 @@ const upload = multer({ storage: fileStorageEngine });
 // Single File Route Handler
 app.post("/upload/single", upload.single("games"), (req, res) => {
   console.log(req.file);
+  decompress(`public/games/${req.file.filename}`, `public/games/unzip/${req.file.filename.replace(".zip","")}`)
+  .then((files) => {
+    console.log(files);
+    const gameData = JSON.parse(req.body.gameData);
+    gameUpload(gameData.gameName, "testuser", req.file.filename.replace(".zip","")); // Truyền mảng tên tệp tin vào hàm gameUpload
+  })
+  .catch((error) => {
+    console.log(error);
+  });
   res.send("Single FIle upload success");
 });
 
@@ -166,24 +185,6 @@ app.post('/api/login', (req, res) => {
     });
 });
 
-app.post('/api/upload', (req, res) => {
-  gameUpload(req.body.gamename, req.body.username)
-    .then((result) => {
-      if (result === true) {
-        res.status(200).json({
-          message: "Access Token"
-        });
-      } else {
-        console.log("sai");
-        // res.json({ message: 'DangKyThatBai' });
-        res.status(400).json({ message: 'DangKyThatBai' });
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      res.json({ message: 'DangKyLoi' });
-    });
-});
 
 app.post("/api/getuser", (req, res) => {
   getUser(req.body.username)
