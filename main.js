@@ -13,7 +13,6 @@ const port = 8000;
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const decompress = require("decompress");
-const { forEach } = require("jszip");
 
 require("dotenv").config();
 
