@@ -3,7 +3,7 @@ const express = require("express");
 const passport = require('passport');
 const jwt = require('jsonwebtoken')
 const session = require('express-session');
-const { register, login, playGame, getUser, gameUpload } = require("./db.js");
+const { register, login, playGame, getUser, gameUpload, getGameBox } = require("./db.js");
 const { jwtMiddleware, convertJWTToJS, sign } = require("./jwt.js")
 var cors = require("cors");
 const app = express();
@@ -13,6 +13,7 @@ const port = 8000;
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const decompress = require("decompress");
+const { v4: uuidv4 } = require("uuid");
 
 require("dotenv").config();
 
@@ -80,7 +81,7 @@ app.post("/upload/single", upload.single("games"), (req, res) => {
   .then((files) => {
     console.log(files);
     const gameData = JSON.parse(req.body.gameData);
-    gameUpload(gameData.gameName, "testuser", req.file.filename.replace(".zip","")); // Truyền mảng tên tệp tin vào hàm gameUpload
+    gameUpload(gameData.gameName, "testuser", uuidv4(), req.file.filename.replace(".zip","")); // Truyền mảng tên tệp tin vào hàm gameUpload
   })
   .catch((error) => {
     console.log(error);
@@ -89,18 +90,17 @@ app.post("/upload/single", upload.single("games"), (req, res) => {
 });
 
 // Multiple Files Route Handler
-app.post("/upload/multiple", upload.array("games", 4), (req, res) => {
-  const gameData = JSON.parse(req.body.gameData);
-  const gameName = gameData.gameName;
-  const fileNames = []; // Mảng để lưu tên tệp tin
-
-  req.files.forEach((file) => {
-    const fileName = file.filename; // Lấy tên tệp tin
-    fileNames.push(fileName); // Thêm tên tệp tin vào mảng
-  });
-
-  gameUpload(gameName, "testuser", fileNames); // Truyền mảng tên tệp tin vào hàm gameUpload
-  res.send("Multiple Files Upload Success");
+app.post("/upload/multiple", upload.array("games", 2), (req, res) => {
+  console.log(req.file);
+  // decompress(`public/games/${req.file.filename}`, `public/games/unzip/${req.file.filename.replace(".zip","")}`)
+  // .then((files) => {
+  //   console.log(files);
+  //   const gameData = JSON.parse(req.body.gameData);
+  //   gameUpload(gameData.gameName, "testuser", uuidv4(), req.file.filename.replace(".zip","")); // Truyền mảng tên tệp tin vào hàm gameUpload
+  // })
+  // .catch((error) => {
+  //   console.log(error);
+  // });
 });
 
 
@@ -192,6 +192,17 @@ app.post("/api/getuser", (req, res) => {
       username: result.username,
       role: result.role,
       game: result.game,
+    });
+  }).catch((error) => {
+    console.error(error);
+    res.json({ message: 'DangKyLoi' });
+  });
+});
+app.get("/api/getdata", (req, res) => {
+  getGameBox()
+  .then((result) => {
+    res.status(200).json({
+      gameData: result
     });
   }).catch((error) => {
     console.error(error);

@@ -100,11 +100,12 @@ async function login(_username, _password) {
     }
 }
 
-async function gameUpload(_gamename, _username, dataurl) {
+async function gameUpload(_gamename, _username, _id, dataurl) {
     const recipes = [
       {
         name: _gamename,
         author: _username,
+        id: _id,
         date: new Date(),
         data:  dataurl
       },
@@ -151,4 +152,17 @@ async function gameUpload(_gamename, _username, dataurl) {
       }
   }
 
-module.exports = { register, login, gameUpload, playGame, getUser };
+  async function getGameBox() {
+    try {
+        var queryResult = await gamecollection.find().toArray();
+
+        var gameData = queryResult;
+        console.log(gameData);
+        return gameData;
+
+    } catch (err) {
+        console.error(`Something went wrong trying to insert the new documents: ${err}\n`);
+      }
+  }
+
+module.exports = { register, login, gameUpload, playGame, getUser, getGameBox };
