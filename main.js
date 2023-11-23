@@ -1,10 +1,9 @@
 const evn = require("dotenv").config();
 const express = require("express");
-const passport = require('passport');
-const jwt = require('jsonwebtoken')
-const session = require('express-session');
+const jwt = require('jsonwebtoken');
+const cookie = require('cookie');
 const { register, login, playGame, getUser, gameUpload, getGameBox } = require("./db.js");
-const { jwtMiddleware, convertJWTToJS, sign } = require("./jwt.js")
+const { jwtMiddleware, convertJWTToJS, sign } = require("./jwt.js");
 var cors = require("cors");
 const app = express();
 const multer = require("multer");
@@ -24,6 +23,12 @@ const folderPath = 'public/Build'; // Đường dẫn đến thư mục
 app.get('/files', (req, res) => {
 });
 
+// app.use(
+//   require('cookie-session')({
+//     maxAge: 24 * 60 * 60 * 10000,
+//     keys: [process.env.SESSION_SECRET]
+//   })
+// );
 
 app.use(
   express.static(path.join(__dirname, "/public"), {
@@ -37,28 +42,82 @@ app.use(
     },
   })
 );
-
-
-app.use(session({
-  resave: true,
-  saveUninitialized: true,
-  secret: process.env.SESSION_SECRET,
-  cookie: { maxAge: 60000 }
-}));
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
-app.use(passport.initialize());
-app.use(passport.session());
+const sessions = {};
+// app.use(passport.initialize());
+// app.use(passport.session());
+const cookieOptions = {
+  httpOnly: true,
+  secure: true,
+  path: '/'
+};
 
-function Auth(req, res, next) {
-  if (req.session.User && req.session.User.islogin) {
-    return next();
-  } else {
-    res.redirect('/login');
+const authorization = (req, res, next) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.sendStatus(403);
   }
+  try {
+    const data = jwt.verify(token, process.env.ACCESS_SECRET);
+    req.userId = data.id;
+    req.userRole = data.role;
+    return next();
+  } catch {
+    return res.sendStatus(403);
+  }
+};
+
+const generalAccessToken = (data) => {
+  const accesstoken = jwt.sign({ data }, process.env.ACCESS_SECRET, { expiresIn: "30m" });
+  return accesstoken;
 }
+const generalRefreshToken = (data) => {
+  const refreshtoken = jwt.sign({ data }, process.env.REFRESH_SECRET, { expiresIn: "30d" });
+  return refreshtoken;
+}
+
+app.post('/api/login', (req, res) => {
+  login(req.body.username, req.body.password)
+    .then((result) => {
+      if (result === true) {
+        const accesstoken = generalAccessToken({ username: req.body.username, role: 'user', isLogin: true })
+        const refreshtoken = generalRefreshToken({ username: req.body.username, role: 'user' })
+        // res.cookie("token", accesstoken,
+        //   {
+        //     httpOnly: true,
+        //   });
+        res.set('Set-Cookie', cookie.serialize('token', accesstoken, cookieOptions));
+        return res.status(200).json({
+          // accesstoken: accesstoken,
+          // refreshtoken: refreshtoken
+        });
+        // return res
+        //   .cookie("access_token", accesstoken, {
+        //     httpOnly: true,
+        //   })
+        //   .status(200)
+
+      } else {
+        console.log("sai");
+        // res.json({ message: 'DangKyThatBai' });
+        res.status(400).json({ message: 'DangKyThatBai' });
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.json({ message: 'DangKyLoi' });
+    });
+});
+
+// function Auth(req, res, next) {
+//   if (req.session.User && req.session.User.islogin) {
+//     return next();
+//   } else {
+//     res.redirect('/login');
+//   }
+// }
 
 const fileStorageEngine = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -77,15 +136,15 @@ const upload = multer({ storage: fileStorageEngine });
 // Single File Route Handler
 app.post("/upload/single", upload.single("games"), (req, res) => {
   console.log(req.file);
-  decompress(`public/games/${req.file.filename}`, `public/games/unzip/${req.file.filename.replace(".zip","")}`)
-  .then((files) => {
-    console.log(files);
-    const gameData = JSON.parse(req.body.gameData);
-    gameUpload(gameData.gameName, "testuser", uuidv4(), req.file.filename.replace(".zip","")); // Truyền mảng tên tệp tin vào hàm gameUpload
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+  decompress(`public/games/${req.file.filename}`, `public/games/unzip/${req.file.filename.replace(".zip", "")}`)
+    .then((files) => {
+      console.log(files);
+      const gameData = JSON.parse(req.body.gameData);
+      gameUpload(gameData.gameName, "testuser", uuidv4(), req.file.filename.replace(".zip", "")); // Truyền mảng tên tệp tin vào hàm gameUpload
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   res.send("Single FIle upload success");
 });
 
@@ -129,83 +188,47 @@ app.post('/api/register', (req, res) => {
       res.json({ message: 'DangKyLoi' });
     });
 });
-
-const generalAccessToken = (data) => {
-  const accesstoken = jwt.sign({ data }, process.env.ACCESS_SECRET, { expiresIn: "30m" });
-  return accesstoken;
-}
-const generalRefreshToken = (data) => {
-  const refreshtoken = jwt.sign({ data }, process.env.REFRESH_SECRET, { expiresIn: "30d" });
-  return refreshtoken;
-}
-app.get("/login", function (req, res) {
-  res.sendFile(path.join(__dirname, "/login.html"));
-});
+// app.get("/login", function (req, res) {
+//   res.sendFile(path.join(__dirname, "/login.html"));
+// });
 
 app.post('/api/playgame', async (req, res) => {
   try {
     playGame(req.body.gamename)
-    .then((result) => {
-      return res.json({ gameData: result });
-    })
+      .then((result) => {
+        return res.json({ gameData: result });
+      })
   } catch (error) {
     console.error("Error while playing game:", error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-app.get("/main", Auth, function (req, res) {
-res.sendFile(path.join(__dirname, "/public/main.html"));
-});
+// app.get("/main", Auth, function (req, res) {
+// res.sendFile(path.join(__dirname, "/public/main.html"));
+// });
 
-app.post('/api/login', (req, res) => {
-  login(req.body.username, req.body.password)
+app.post("/api/getuser", (req, res) => {
+  getUser(req.body.username)
     .then((result) => {
-      if (result === true) {
-        const accesstoken = generalAccessToken({ username: req.body.username, role: 'user' })
-        const refreshtoken = generalRefreshToken({ username: req.body.username, role: 'user' })
-        res.cookie("token", accesstoken, {
-          httpOnly: true,
-        });
-        res.status(200).json({
-          accesstoken: accesstoken,
-          refreshtoken: refreshtoken
-        });
-        console.log("accesstoken:", accesstoken);
-      } else {
-        console.log("sai");
-        // res.json({ message: 'DangKyThatBai' });
-        res.status(400).json({ message: 'DangKyThatBai' });
-      }
-    })
-    .catch((error) => {
+      res.status(200).json({
+        userData: result
+      });
+    }).catch((error) => {
       console.error(error);
       res.json({ message: 'DangKyLoi' });
     });
 });
-
-
-app.post("/api/getuser", (req, res) => {
-  getUser(req.body.username)
-  .then((result) => {
-    res.status(200).json({
-      userData: result
-    });
-  }).catch((error) => {
-    console.error(error);
-    res.json({ message: 'DangKyLoi' });
-  });
-});
 app.get("/api/getdata", (req, res) => {
   getGameBox()
-  .then((result) => {
-    res.status(200).json({
-      gameData: result
+    .then((result) => {
+      res.status(200).json({
+        gameData: result
+      });
+    }).catch((error) => {
+      console.error(error);
+      res.json({ message: 'DangKyLoi' });
     });
-  }).catch((error) => {
-    console.error(error);
-    res.json({ message: 'DangKyLoi' });
-  });
 });
 
 
