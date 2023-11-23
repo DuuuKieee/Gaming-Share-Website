@@ -37,7 +37,7 @@ const ListGame = () => {
         {isLoading ? (
           <p>Loading...</p>
         ) : gamesData && gamesData.gameData.length > 0 ? (
-          gamesData.gameData.map((game) => <GameList key={game.id} gameName={game.name} />)
+          gamesData.gameData.map((game) => <GameList key={game.id} gameName={game.name} description={game.description} />)
         ) : (
           <p>No games available</p>
         )}

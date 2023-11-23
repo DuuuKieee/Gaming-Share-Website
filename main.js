@@ -49,8 +49,8 @@ const sessions = {};
 // app.use(passport.initialize());
 // app.use(passport.session());
 const cookieOptions = {
-  httpOnly: true,
-  secure: true,
+  // httpOnly: true,
+  // secure: true,
   path: '/'
 };
 
@@ -84,24 +84,15 @@ app.post('/api/login', (req, res) => {
       if (result === true) {
         const accesstoken = generalAccessToken({ username: req.body.username, role: 'user', isLogin: true })
         const refreshtoken = generalRefreshToken({ username: req.body.username, role: 'user' })
-        // res.cookie("token", accesstoken,
-        //   {
-        //     httpOnly: true,
-        //   });
+
         res.set('Set-Cookie', cookie.serialize('token', accesstoken, cookieOptions));
         return res.status(200).json({
-          // accesstoken: accesstoken,
+          token: accesstoken
           // refreshtoken: refreshtoken
         });
-        // return res
-        //   .cookie("access_token", accesstoken, {
-        //     httpOnly: true,
-        //   })
-        //   .status(200)
-
-      } else {
+      }
+      else {
         console.log("sai");
-        // res.json({ message: 'DangKyThatBai' });
         res.status(400).json({ message: 'DangKyThatBai' });
       }
     })

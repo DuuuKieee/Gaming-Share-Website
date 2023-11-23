@@ -102,24 +102,24 @@ async function login(_username, _password) {
 
 async function gameUpload(_gamename, _username, _id, dataurl) {
     const recipes = [
-      {
-        name: _gamename,
-        author: _username,
-        id: _id,
-        date: new Date(),
-        data:  dataurl
-      },
+        {
+            name: _gamename,
+            author: _username,
+            id: _id,
+            date: new Date(),
+            data: dataurl
+        },
     ];
-    
-    try {
-      const insertManyResult = await gamecollection.insertMany(recipes);
-      console.log(`${insertManyResult.insertedCount} documents successfully inserted.\n`);
-    } catch (err) {
-      console.error(`Something went wrong trying to insert the new documents: ${err}\n`);
-    }
-  }
 
-  async function playGame(_gamename) {
+    try {
+        const insertManyResult = await gamecollection.insertMany(recipes);
+        console.log(`${insertManyResult.insertedCount} documents successfully inserted.\n`);
+    } catch (err) {
+        console.error(`Something went wrong trying to insert the new documents: ${err}\n`);
+    }
+}
+
+async function playGame(_gamename) {
     var query = { name: _gamename };
     try {
         var queryResult = await gamecollection.find(query).toArray();
@@ -128,30 +128,30 @@ async function gameUpload(_gamename, _username, _id, dataurl) {
             console.log(gameData);
             return gameData;
 
-          } else {
+        } else {
             console.log("Không tìm thấy dữ liệu của trò chơi.");
-          }
+        }
     } catch (err) {
         console.error(`Something went wrong trying to insert the new documents: ${err}\n`);
-      }
-  }
-  async function getUser(_username) {
+    }
+}
+async function getUser(_username) {
     var query = { author: _username };
     try {
         var queryResult = await gamecollection.find(query).toArray();
-        if (queryResult.length >=0) {
+        if (queryResult.length >= 0) {
             console.log(queryResult);
             return queryResult;
 
-          } else {
+        } else {
             console.log("Không tìm thấy dữ liệu của trò chơi.");
-          }
+        }
     } catch (err) {
         console.error(`Something went wrong trying to insert the new documents: ${err}\n`);
-      }
-  }
+    }
+}
 
-  async function getGameBox() {
+async function getGameBox() {
     try {
         var queryResult = await gamecollection.find().toArray();
 
@@ -161,7 +161,23 @@ async function gameUpload(_gamename, _username, _id, dataurl) {
 
     } catch (err) {
         console.error(`Something went wrong trying to insert the new documents: ${err}\n`);
-      }
-  }
+    }
+}
+
+async function updateGameInfo(_gamename, _description) {
+    try {
+        await gamecollection.updateOne(
+            { name: _gamename },
+            {
+                $set: { 'name': _gamename, description: _description }
+            }
+        )
+        return true;
+
+    } catch (err) {
+        //     console.error(Something went wrong trying to insert the new documents: ${ err }\n);
+        // }
+    }
+}
 
 module.exports = { register, login, gameUpload, playGame, getUser, getGameBox };
