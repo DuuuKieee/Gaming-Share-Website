@@ -23,10 +23,10 @@
     }
 
     .GameWindow {
-      width: 80%;
-      height: 80%;
-      overflow: auto;
-      background-color: var(--bgColor);
+      width: 100%;
+      height: 90%;
+      overflow: inherit;
+      background-color: var(--bodyBgColor);
     }
 
     .playButton {
