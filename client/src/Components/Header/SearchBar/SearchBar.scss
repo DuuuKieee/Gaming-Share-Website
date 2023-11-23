@@ -1,0 +1,46 @@
+.SearchBar{
+    width: 50%;
+    height: 30px;
+    .SearchBox{
+        padding: 1rem 2rem;
+        background: var(--bgColor);
+        border-radius: 5px;
+        gap: 1rem;
+        box-shadow: 0 2px 4px var(--shadow);
+        width: 100%;
+        height: 30px;
+
+        input{
+            width: 80%;
+            border: none;
+            outline: none;
+            background: none;
+        }
+
+        .icon{
+            color: var(--textColor);
+
+            &:hover{
+                cursor: pointer;
+                color: var(--PrimaryColor);
+            }
+        }
+    }
+    
+    .SearchList{
+        margin-top: 1rem;
+        position: relative;
+        width: 100%;
+        height: 200px;
+        overflow: auto;
+        background-color: var(--bgColor);
+        border: 1px solid black;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        overflow: -moz-scrollbars-none;
+        &::-webkit-scrollbar { 
+            width: 0 !important;
+            display: none; 
+        }
+    }
+}

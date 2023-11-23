@@ -15,30 +15,7 @@
             }
         }
         
-        .SearchBar{
-            padding: 1rem 2rem;
-            background: var(--bgColor);
-            border-radius: 5px;
-            gap: 1rem;
-            box-shadow: 0 2px 4px var(--shadow);
-            width: 40%;
-            height: 30px;
-
-            input{
-                border: none;
-                outline: none;
-                background: none;
-            }
-
-            .icon{
-                color: var(--textColor);
-
-                &:hover{
-                    cursor: pointer;
-                    color: var(--PrimaryColor);
-                }
-            }
-        }
+        
     }
 
     .TitleImg{

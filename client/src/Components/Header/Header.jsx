@@ -2,6 +2,7 @@ import React from "react";
 import "./Header.scss";
 import {HiSearch} from "react-icons/hi";
 import itstoolate from "../../Assets/itstoolate.jpg";
+import SearchBar from "./SearchBar/SearchBar";
 
 const Header = () => {
     return (
@@ -12,10 +13,7 @@ const Header = () => {
                     <h3>PLease enjoy your moment~</h3>
                 </div>
 
-                <div className="SearchBar flex">
-                    <HiSearch className="icon"/>
-                    <input type="text" placeholder="Search..." />
-                </div>
+                <SearchBar />
             </div>
 
             <div className="TitleImg">
