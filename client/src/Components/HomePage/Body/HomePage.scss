@@ -3,6 +3,11 @@
     height: 100%;
     padding: 2rem;
     overflow: auto;
+    overflow: -moz-scrollbars-none;
+    &::-webkit-scrollbar { 
+        width: 0 !important;
+        display: none; 
+    }
 
     .body{
         margin-top: 2rem;

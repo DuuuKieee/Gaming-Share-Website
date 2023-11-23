@@ -1,25 +1,3 @@
-:root{
-    --PrimaryColor: #4F200D;
-    --HoverColor: #F4A460;
-    --orange: #FF7F00;
-    --white-color: white;
-    --black-color: black;
-    --inputColor:hsl(330,12%,97%);
-    --textColor:hsl(240, 1%,48%);
-    --bgColor:#FFF9B0;
-    --greyText: rgb(190,190,190);
-    --titleText: #CF0A0A;
-    --bodyBgColor: #FFD384;
-  
-    --biggest-font-size: 2.5rem;
-    --h1FontSize: 1.5rem;
-    --h2FontSize: 1.25rem;
-    --h3FontSize: 1rem; 
-    --normalFontSize: .938rem;
-    --smallFontSize: .813rem;
-    --smallestFontSize: .75rem;
-}
-
 .top{
     .Header{
         justify-content: space-between;
@@ -42,7 +20,7 @@
             background: var(--bgColor);
             border-radius: 5px;
             gap: 1rem;
-            box-shadow: 0 2px 4px var(--orange);
+            box-shadow: 0 2px 4px var(--shadow);
             width: 40%;
             height: 30px;
 

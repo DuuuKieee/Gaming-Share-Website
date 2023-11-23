@@ -87,10 +87,11 @@ body{
   --black-color: black;
   --inputColor:hsl(330,12%,97%);
   --textColor:hsl(240, 1%,48%);
-  --bgColor:#FFF9B0;
-  --greyText: rgb(190,190,190);
-  --titleText: #CF0A0A;
-  --bodyBgColor: #FFD384;
+  --bgColor: white;
+  --greyText: rgb(3, 2, 2);
+  --titleText: black;
+  --bodyBgColor: rgb(220, 216, 216);
+  --shadow: grey;
 
   --biggest-font-size: 2.5rem;
   --h1FontSize: 1.5rem;

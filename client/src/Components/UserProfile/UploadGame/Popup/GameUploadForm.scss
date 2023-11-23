@@ -14,6 +14,8 @@
         text-align: center;
     }
     .Properties{
+        width: 100%;
+        height: 70px;
         .Property{
             margin: 10px;
         }
@@ -22,7 +24,7 @@
             background: var(--bgColor);
             border-radius: 5px;
             gap: 1rem;
-            box-shadow: 0 2px 4px var(--orange);
+            box-shadow: 0 2px 4px var(--shadow);
             width: 70%;
             height: 30px;
             input{
@@ -32,38 +34,44 @@
             }
         }
         .Browse{
-            margin: 10px;
-            padding: 1rem 2rem;
-            justify-content: center;
-            align-items: center;
+            margin-left: 10px;
+            height: 70px;
+            width: 70px;
             background: var(--bgColor);
             border-radius: 5px;
-            box-shadow: 0 2px 4px var(--orange);
-            width: 10%;
-            height: 30px;
-            align-items: center;
-            &:hover{
-                cursor: pointer;
-                background-color: var(--bodyBgColor);
-            }
+            box-shadow: 0 2px 4px var(--shadow);
             font-weight: bold;
+            .icon{
+                gap: 1rem;
+                padding: 0;
+                width: 70px;
+                height: 70px;
+                background-color: var(--bgColor);
+                border-radius: 5px;
+                color: var(--textColor);
+                justify-self: center;
+                &:hover{
+                    cursor: pointer;
+                    background-color: var(--bodyBgColor);
+                }
+            }
         }
+        
     }
+
     .Upload{
-        justify-content: center;
-        align-items: center;
-        margin: 10px 40%;
+        margin-left : 45%;
         padding: 1rem 2rem;
         background: var(--bgColor);
         border-radius: 5px;
-        box-shadow: 0 2px 4px var(--orange);
-        width: 20%;
-        height: 30px;
-        font-weight: bold;
+        box-shadow: 0 2px 4px var(--shadow);
+        width: 10%;
+        height: 30%;
         align-items: center;
         &:hover{
             cursor: pointer;
             background-color: var(--bodyBgColor);
         }
+        font-weight: bold;
     }
 }

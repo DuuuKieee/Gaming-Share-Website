@@ -11,6 +11,8 @@ const UserProfile = () => {
     const username = "Kai Mink nè"; //const storedUsername = sessionStorage.getItem("username"); lấy từ session storage
     const role = "admin";
     const games = 0;
+
+
     return (
     <div className="userContent">
         <div className="bodyUser">

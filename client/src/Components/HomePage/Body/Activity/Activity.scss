@@ -1,10 +1,10 @@
 
 .Body{
+    width: 100%;
     background:var(--bodyBgColor);
     padding: 2rem;
     .GameBoxes{
         width: 100%;
-        align-items: center;
         gap: 2rem;
     }
     

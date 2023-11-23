@@ -189,9 +189,7 @@ app.post("/api/getuser", (req, res) => {
   getUser(req.body.username)
   .then((result) => {
     res.status(200).json({
-      username: result.username,
-      role: result.role,
-      game: result.game,
+      userData: result
     });
   }).catch((error) => {
     console.error(error);

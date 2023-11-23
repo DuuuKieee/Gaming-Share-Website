@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import "./GamePage.scss";
 
 const GamePage = () => {
   const [responseData, setResponseData] = useState();
+  const { gameName } = useParams();
+
+  const [showGameWindow, setShowGameWindow] = useState(false);
 
   const playGame = () => {
     fetch("http://localhost:8000/api/playgame", {
@@ -11,12 +15,13 @@ const GamePage = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        gamename: "Legend of Sontinh",
+        gamename: gameName,
       }),
     })
       .then((response) => {
         if (response.ok) {
           // Xử lý thành công
+          console.log(gameName);
           return response.json();
         } else {
           throw new Error("Something went wrong");
@@ -29,23 +34,22 @@ const GamePage = () => {
       .catch((error) => {
         console.error(error);
       });
+      setShowGameWindow(true);
   };
 
   return (
     <div className="gamePageContent">
       <div className="bodyGame">
-        <p>Game X</p>
-        <div>
-          <button onClick={playGame}>Play</button>
-          {responseData&&(
-            <iframe
-              src={`http://localhost:8000/games/unzip/${responseData}/index.html`}
-              title="Your Page"
-              width="100%"
-              height="500px"
+        <p>{gameName}</p>
+          {!showGameWindow && (
+          <button className="playButton" onClick={playGame}>Play</button>
+          )}
+          {responseData && showGameWindow && (
+            <iframe className="GameWindow"
+               src={`http://localhost:8000/games/unzip/${responseData}/index.html`}
+              title="Your Page" 
             />
           )}
-        </div>
       </div>
     </div>
   );

@@ -136,13 +136,12 @@ async function gameUpload(_gamename, _username, _id, dataurl) {
       }
   }
   async function getUser(_username) {
-    var query = { username: _username };
+    var query = { author: _username };
     try {
-        var queryResult = await collection.find(query).toArray();
-        if (queryResult.length == 1) {
-            var userData = queryResult[0];
-            console.log(userData);
-            return userData;
+        var queryResult = await gamecollection.find(query).toArray();
+        if (queryResult.length >=0) {
+            console.log(queryResult);
+            return queryResult;
 
           } else {
             console.log("Không tìm thấy dữ liệu của trò chơi.");

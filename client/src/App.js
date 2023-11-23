@@ -56,7 +56,7 @@ componentWillMount() {
               <UserProfile />
             </div>
         )} />
-          <Route path="/Game-X" element={(
+          <Route path="/:gameName" element={(
             <div className='container'>
               <SideBar />
               <GamePage />

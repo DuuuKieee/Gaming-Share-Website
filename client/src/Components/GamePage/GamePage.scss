@@ -1,29 +1,46 @@
 .gamePageContent {
-    width: 80%;
+  width: 80%;
+  height: 100%;
+  overflow: auto;
+  justify-self: center;
+
+  .bodyGame {
+    width: 100%;
     height: 100%;
-    overflow: auto;
-    justify-self: center;
-  
-    .bodyGame {
+    gap: 1rem;
+    padding: 2rem;
+    padding-left: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    p {
       width: 100%;
-      height: 100%;
-      gap: 1rem;
-      padding: 2rem;
-  
-      p {
-        width: 100%;
-        height: 10%;
-        color: var(--titleText);
-        font-size: var(--h1FontSize);
-        text-align: center;
-      }
-  
-      .GameWindow {
-        width: 100%;
-        height: calc(90% - 2rem); /* Subtract the padding from the height */
-        overflow: auto;
-        justify-self: center;
-        background-color: var(--bgColor);
+      height: 10%;
+      color: var(--titleText);
+      font-size: var(--h1FontSize);
+      text-align: center;
+    }
+
+    .GameWindow {
+      width: 80%;
+      height: 80%;
+      overflow: auto;
+      background-color: var(--bgColor);
+    }
+
+    .playButton {
+      width: 100px;
+      height: 100px;
+      background: var(--bgColor);
+      border-radius: 5px;
+      box-shadow: 0 2px 4px var(--shadow);
+      font-weight: bold;
+      align-items: center;
+      &:hover{
+        cursor: pointer;
+        background-color: var(--bodyBgColor);
       }
     }
   }
+}

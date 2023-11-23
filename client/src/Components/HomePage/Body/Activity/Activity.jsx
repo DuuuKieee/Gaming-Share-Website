@@ -42,6 +42,8 @@ const ListGame = () => {
           <p>No games available</p>
         )}
         <GameList key="default-game" imgSrc={img1} gameName={name} description={description} />
+        <GameList key="default-game" imgSrc={img1} gameName={name} description={description} />
+        <GameList key="default-game" imgSrc={img1} gameName={name} description={description} />
       </ul>
     </div>
   );

@@ -19,7 +19,7 @@
         img{
            width: 90%;
            margin-right: .5rem;
-           background-color: #FFD384;
+           background-color: var(--bgColor);
            border-radius: 2px;
            padding: .2rem;
            box-shadow: 1px 0px 4px var(--greyText);
@@ -31,7 +31,7 @@
 
 .Tag{
   .Title{
-    font-size: var(--h3FontSize);
+    font-size: var(--h1FontSize);
     color: var(--titleText);
     padding: 2rem 2rem 1rem;
   }
@@ -41,6 +41,7 @@
       padding: 1rem 1.5rem;
       width: 100%;
       position: relative;
+      font-size: var(--h2FontSize);
 
       &::before{
         position: absolute;
@@ -51,17 +52,17 @@
         bottom: 0;
         border-top-right-radius: 10px;
         border-bottom-right-radius: 10px;
-        background: var(--orange);
+        background: var(--shadow);
       }
 
       .tagLink{
-        color: var(--HoverColor);
+        color: var(--titleText);
         font-weight: 500;
         transition: 0;
       }
 
       &:hover .tagLink{
-        color: var(--orange);
+        color: var(--shadow);
         transition: 0;
       }
 

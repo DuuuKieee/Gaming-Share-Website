@@ -57,18 +57,19 @@ const GameUploadForm  = () => {
                 <h3 className="Property">Giới thiệu:</h3>
                 <input type="text" className="Input" onChange={handleGameDescriptionChange} placeholder="Giới thiệu game của bạn..."/>
             </div>
-            <div className="upload flex">
-          <label htmlFor="fileInput" className="Button">
-            <HiOutlineUpload className="UploadButton" />
-          </label>
-          <input
-            id="fileInput"
-            type="file"
-            onChange={handleFileUpload}
-            multiple
-            style={{ display: "none" }}
-/>
-          <h3>Upload game của bạn bằng file .zip</h3>
+            <div className="Properties flex">
+                <h3 className="Property">File Game:</h3>
+                <label htmlFor="fileInput" className="Browse flex">
+                  <HiOutlineUpload  className="icon"/>
+                </label>
+                <input 
+                  id="fileInput"
+                  type="file"
+                  onChange={handleFileUpload}
+                  multiple
+                  style={{ display: "none" }}
+                />
+                <h3 className="Property">Upload file .zip</h3>
         </div>
             <button className="Upload flex" onClick={handleFileUpload}> <p>Upload</p></button>
         </div>
