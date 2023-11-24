@@ -18,16 +18,7 @@ const jwtMiddleware = (req, res, next) => {
 };
 
 function convertJWTToJS(accessToken) {
-    const tokenParts = accessToken.split(".");
-    const header = atob(tokenParts[0]);
-    const body = atob(tokenParts[1]);
-    const signature = tokenParts[2];
-
-    return {
-        header,
-        body,
-        signature,
-    };
+    return jwt.verify(req.body.token, process.env.ACCESS_SECRET);
 }
 
 module.exports = {

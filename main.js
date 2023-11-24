@@ -198,9 +198,21 @@ app.post('/api/playgame', async (req, res) => {
 // app.get("/main", Auth, function (req, res) {
 // res.sendFile(path.join(__dirname, "/public/main.html"));
 // });
-
+app.post("/api/userprofile", (req, res) => {
+  const decodedToken = jwt.verify(req.body.token, process.env.ACCESS_SECRET);
+  getUserProfile(decodedToken.data.username, decodedToken.data.role)
+    .then((result) => {
+      res.status(200).json({
+        UserProfile: result
+      });
+    }).catch((error) => {
+      console.error(error);
+      res.json({ message: 'DangKyLoi' });
+    });
+});
 app.post("/api/getuser", (req, res) => {
-  getUser(req.body.username)
+  const decodedToken = jwt.verify(req.body.token, process.env.ACCESS_SECRET);
+  getUser(decodedToken.data.username)
     .then((result) => {
       res.status(200).json({
         userData: result

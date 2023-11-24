@@ -13,7 +13,7 @@ const Manage = () => {
   useEffect(() => {
     fetchDataFromMongoDB();
   }, []);
-
+  const token = Cookies.get("token");
   const fetchDataFromMongoDB = async () => {
     try {
       const response = await fetch("http://localhost:8000/api/getuser",
@@ -21,9 +21,9 @@ const Manage = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${Cookies.token}`
           },
           body: JSON.stringify({
+            token: token
           }),
         })
 
