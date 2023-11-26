@@ -10,7 +10,33 @@ import {GiSaveArrow} from "react-icons/gi";
 const ManageGameBox = ({ imgSrc, gameName, description }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [GameName, setGameName] = useState(`${gameName}`); // Giá trị mặc định của tên game
-    const [gameDescription, setGameDescription] = useState(`${gameName}`);
+    const [gameDescription, setGameDescription] = useState(`${description}`);
+    const fetchDataFromMongoDB = async () => {
+        try {
+          const response = await fetch("http://localhost:8000/api/updatedata",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                name: "NewLuom",
+                newname: GameName,
+                description: gameDescription
+              }),
+            })
+    
+          if (response.ok) {
+            //in gì đó thể hiện thành công
+            console.log("Update thanh cong");
+
+          } else {
+            console.log("Error fetching data from MongoDB");
+          }
+        } catch (error) {
+          console.log("Error fetching data from MongoDB:", error);
+        }
+      };
     const handleEditClick = () => {
         // Khi nhấn nút chỉnh sửa
         setIsEditing(!isEditing); // Đảo ngược trạng thái chỉnh sửa
@@ -18,6 +44,7 @@ const ManageGameBox = ({ imgSrc, gameName, description }) => {
 
     const handleSaveClick = () => {
         // Khi nhấn nút lưu (sau khi chỉnh sửa)
+        fetchDataFromMongoDB();
         setIsEditing(false); // Tắt chế độ chỉnh sửa
         // Ở đây bạn có thể thực hiện bất kỳ thay đổi nào liên quan đến việc lưu dữ liệu, ví dụ: gửi dữ liệu lên máy chủ
     };

@@ -7,30 +7,32 @@ import avt from "../../Assets/Video Projects/a44.jpg"
 import Cookies from "js-cookie";
 
 const UserProfile = () => {
-    const [userData, setUserData] = useState({});
+    const [userData, setUserData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const games = 0;
+
     useEffect(() => {
         fetchUserData();
     }, []);
+
     const token = Cookies.get("token");
+
     const fetchUserData = async () => {
         try {
-            const response = await fetch("http://localhost:8000/api/userprofile",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        token: token
-                    }),
-                })
+            const response = await fetch("http://localhost:8000/api/userprofile", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    token: token
+                }),
+            });
 
             if (response.ok) {
                 const data = await response.json();
-                const { username, role } = data;
-                setUserData({ username, role });
-
+                setUserData(data);
+                setIsLoading(false);
             } else {
                 console.log("Error fetching data from MongoDB");
             }
@@ -38,17 +40,28 @@ const UserProfile = () => {
             console.log("Error fetching data from MongoDB:", error);
         }
     };
+
     useEffect(() => {
-        console.log(userData);
-        console.log(userData.username);
-        console.log(userData.role);
-    }, [userData]);
+        if (!isLoading) {
+            // Khi dữ liệu đã tải thành công, bạn có thể thực hiện các thao tác chỉnh sửa ở đây
+        }
+    }, [isLoading]);
+
     return (
         <div className="userContent">
             <div className="bodyUser">
                 <div className="BlockContent">
                     {/* Access userData.username and userData.role */}
-                    <Profile avt={avt} username={userData.username} role={userData.role} games={games} />
+                    {isLoading ? (
+                        <p>Loading...</p>
+                    ) : (
+                        <Profile
+                            avt={avt}
+                            username={userData.UserProfile[0].username}
+                            role={userData.UserProfile[0].role}
+                            games={userData.UserProfile[0].games}
+                        />
+                    )}
                 </div>
                 <div className="BlockContent">
                     <h2><UploadGame /></h2>
@@ -59,5 +72,6 @@ const UserProfile = () => {
             </div>
         </div>
     );
-}
-export default UserProfile
+};
+
+export default UserProfile;

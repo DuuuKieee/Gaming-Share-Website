@@ -2,7 +2,7 @@ const evn = require("dotenv").config();
 const express = require("express");
 const jwt = require('jsonwebtoken');
 const cookie = require('cookie');
-const { register, login, playGame, getUser, gameUpload, getGameBox } = require("./db.js");
+const { register, login, playGame, getUser, gameUpload, getGameBox, updateGameInfo, getUserProfile,deleteGame } = require("./db.js");
 const { jwtMiddleware, convertJWTToJS, sign } = require("./jwt.js");
 var cors = require("cors");
 const app = express();
@@ -200,7 +200,7 @@ app.post('/api/playgame', async (req, res) => {
 // });
 app.post("/api/userprofile", (req, res) => {
   const decodedToken = jwt.verify(req.body.token, process.env.ACCESS_SECRET);
-  getUserProfile(decodedToken.data.username, decodedToken.data.role)
+  getUserProfile(decodedToken.data.username)
     .then((result) => {
       res.status(200).json({
         UserProfile: result
@@ -234,7 +234,37 @@ app.get("/api/getdata", (req, res) => {
     });
 });
 
+app.post("/api/updatedata", (req, res) => {
+  updateGameInfo(req.body.name,req.body.newname, req.body.description)
+    .then((result) => {
+      res.status(200).json({
+        nofitication: "Update thành công"
+      });
+    }).catch((error) => {
+      console.error(error);
+      res.json({ message: 'DangKyLoi' });
+    });
+});
 
+app.post("/api/deletegame", (req, res) => {
+  deleteGame(req.body.id, req.body.author)
+    .then((result) => {
+      res.status(200).json({
+        nofitication: "Delete thành công"
+      });
+      fs.unlink(`public/games/${result.data}.zip`, (err) => {
+        if (err) {
+          console.error(err)
+          return
+        }
+      })
+      fs.rmSync(`public/games/unzip/${result.data}`, { recursive: true, force: true });
+      
+    }).catch((error) => {
+      console.error(error);
+      res.json({ message: 'DangKyLoi' });
+    });
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

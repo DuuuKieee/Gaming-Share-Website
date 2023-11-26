@@ -151,6 +151,22 @@ async function getUser(_username) {
     }
 }
 
+async function getUserProfile(_username) {
+    var query = { username: _username };
+    try {
+        var queryResult = await collection.find(query).toArray();
+        if (queryResult.length >= 0) {
+            console.log(queryResult);
+            return queryResult;
+
+        } else {
+            console.log("Không tìm thấy dữ liệu của người chơi.");
+        }
+    } catch (err) {
+        console.error(`Something went wrong trying to insert the new documents: ${err}\n`);
+    }
+}
+
 async function getGameBox() {
     try {
         var queryResult = await gamecollection.find().toArray();
@@ -164,20 +180,54 @@ async function getGameBox() {
     }
 }
 
-async function updateGameInfo(_gamename, _description) {
+async function updateGameInfo(_gamename, _newname, _description) {
     try {
         await gamecollection.updateOne(
             { name: _gamename },
             {
-                $set: { 'name': _gamename, description: _description }
+                $set: { name: _newname, description: _description }
             }
-        )
+            
+        );
+        console.log("Success");
         return true;
-
     } catch (err) {
-        //     console.error(Something went wrong trying to insert the new documents: ${ err }\n);
-        // }
+        console.error(`Something went wrong trying to update the game information: ${err}`);
+        return false;
     }
 }
+async function deleteGame(_gameid, _author) {
+    try {
+        const gameToDelete = await gamecollection.findOne({
+            id: _gameid,
+            author: _author
+          });
+          if (gameToDelete) {
+            // Lưu trữ dữ liệu trước khi xóa
+            const gameData = gameToDelete;
+          
+            // Thực hiện xóa
+            const result = await gamecollection.deleteOne({
+              id: _gameid,
+              author: _author
+            });
+          
+            if (result.deletedCount === 1) {
+              console.log("Delete Success");
+              return gameData;
+            } else {
+              console.log("Game not found or not authorized to delete.");
+              return false;
+            }
+          } else {
+            console.log("Game not found or not authorized to delete.");
+            return false;
+          }
+  }
+  catch (err) {
+    console.error(`Something went wrong trying to delete the game: ${err}`);
+    return false;
+  }
+}
 
-module.exports = { register, login, gameUpload, playGame, getUser, getGameBox };
+module.exports = { register, login, gameUpload, playGame, getUser, getGameBox, updateGameInfo, getUserProfile, deleteGame };
