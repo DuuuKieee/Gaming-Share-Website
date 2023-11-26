@@ -225,7 +225,7 @@ app.get("/api/getdata", (req, res) => {
 });
 
 app.post("/api/updatedata", (req, res) => {
-  updateGameInfo(req.body.name, req.body.newname, req.body.description)
+  updateGameInfo(req.body.id, req.body.newname, req.body.description)
     .then((result) => {
       res.status(200).json({
         nofitication: "Update thành công"

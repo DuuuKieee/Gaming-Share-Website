@@ -185,7 +185,7 @@ async function getGameBox() {
 async function updateGameInfo(_gamename, _newname, _description) {
     try {
         await gamecollection.updateOne(
-            { name: _gamename },
+            { id: _gamename },
             {
                 $set: { name: _newname, description: _description }
             }

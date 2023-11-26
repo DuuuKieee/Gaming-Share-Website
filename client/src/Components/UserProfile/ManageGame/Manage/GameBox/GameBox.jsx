@@ -7,9 +7,10 @@ import {AiOutlineEdit} from "react-icons/ai";
 import {GiSaveArrow} from "react-icons/gi";
 
 
-const ManageGameBox = ({ imgSrc, gameName, description }) => {
+const ManageGameBox = ({ imgSrc, gameName, description, key }) => {
     const [isEditing, setIsEditing] = useState(false);
-    const [GameName, setGameName] = useState(`${gameName}`); // Giá trị mặc định của tên game
+    const [GameName, setGameName] = useState(`${key}`); // Giá trị mặc định của tên game
+    const [GameID, setID] = useState(`${gameName}`); // Giá trị mặc định của tên game
     const [gameDescription, setGameDescription] = useState(`${description}`);
     const fetchDataFromMongoDB = async () => {
         try {
@@ -20,7 +21,7 @@ const ManageGameBox = ({ imgSrc, gameName, description }) => {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                name: "NewLuom",
+                id: GameID,
                 newname: GameName,
                 description: gameDescription
               }),
@@ -41,6 +42,7 @@ const ManageGameBox = ({ imgSrc, gameName, description }) => {
         // Khi nhấn nút chỉnh sửa
         setIsEditing(!isEditing); // Đảo ngược trạng thái chỉnh sửa
     };
+    
 
     const handleSaveClick = () => {
         // Khi nhấn nút lưu (sau khi chỉnh sửa)
@@ -53,13 +55,11 @@ const ManageGameBox = ({ imgSrc, gameName, description }) => {
     };
 
     const handleNameChange = (e) => {
-        // Khi giá trị tên game thay đổi (khi người dùng nhập)
-        setGameName(e.target.value); // Cập nhật giá trị tên game
+      setGameName(e.target.value); // Cập nhật giá trị tên game
     };
 
     const handleDiscriptionChange = (e) => {
-        // Khi giá trị tên game thay đổi (khi người dùng nhập)
-        setGameDescription(e.target.value); // Cập nhật giá trị tên game
+      setGameDescription(e.target.value);
     };
     return (
         <div className="ManageGameBox flex">
@@ -67,15 +67,17 @@ const ManageGameBox = ({ imgSrc, gameName, description }) => {
                     <div className="GameContent grid">
                         {isEditing ? (
                             <>
-                            <input className="Input"
-                                type="text"
-                                value={gameName}
-                                onChange={handleNameChange}
+                            <input
+                              className="Input"
+                              type="text"
+                              value={GameName} // Thay đổi này
+                              onChange={handleNameChange}
                             />
-                            <input className="Input"
-                                type="text"
-                                value={description}
-                                onChange={handleDiscriptionChange}
+                            <input
+                              className="Input"
+                              type="text"
+                              value={gameDescription}
+                              onChange={handleDiscriptionChange}
                             />
                             </>
                         ) : (<>
