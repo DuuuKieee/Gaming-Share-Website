@@ -3,9 +3,10 @@ import "./UserProfile.scss";
 import ManageGame from "./ManageGame/ManageGame"
 import UploadGame from "./UploadGame/UploadGame";
 import Profile from "./profile/Profile";
-import avt from "../../Assets/Video Projects/a44.jpg"
+import avt from "../../Assets/Video Projects/a44.jpg";
 import Cookies from "js-cookie";
 
+const token = Cookies.get("token");
 const UserProfile = () => {
     const [userData, setUserData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -15,7 +16,6 @@ const UserProfile = () => {
         fetchUserData();
     }, []);
 
-    const token = Cookies.get("token");
 
     const fetchUserData = async () => {
         try {

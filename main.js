@@ -2,7 +2,7 @@ const evn = require("dotenv").config();
 const express = require("express");
 const jwt = require('jsonwebtoken');
 const cookie = require('cookie');
-const { register, login, playGame, getUser, gameUpload, getGameBox, updateGameInfo, getUserProfile,deleteGame } = require("./db.js");
+const { register, login, playGame, getUser, gameUpload, getGameBox, updateGameInfo, getUserProfile, deleteGame } = require("./db.js");
 const { jwtMiddleware, convertJWTToJS, sign } = require("./jwt.js");
 var cors = require("cors");
 const app = express();
@@ -83,7 +83,6 @@ app.post('/api/login', (req, res) => {
     .then((result) => {
       if (result === true) {
         const accesstoken = generalAccessToken({ username: req.body.username, role: 'user', isLogin: true })
-        const refreshtoken = generalRefreshToken({ username: req.body.username, role: 'user' })
 
         res.set('Set-Cookie', cookie.serialize('token', accesstoken, cookieOptions));
         return res.status(200).json({
@@ -235,7 +234,7 @@ app.get("/api/getdata", (req, res) => {
 });
 
 app.post("/api/updatedata", (req, res) => {
-  updateGameInfo(req.body.name,req.body.newname, req.body.description)
+  updateGameInfo(req.body.name, req.body.newname, req.body.description)
     .then((result) => {
       res.status(200).json({
         nofitication: "Update thành công"
@@ -259,7 +258,7 @@ app.post("/api/deletegame", (req, res) => {
         }
       })
       fs.rmSync(`public/games/unzip/${result.data}`, { recursive: true, force: true });
-      
+
     }).catch((error) => {
       console.error(error);
       res.json({ message: 'DangKyLoi' });

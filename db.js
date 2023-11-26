@@ -187,7 +187,7 @@ async function updateGameInfo(_gamename, _newname, _description) {
             {
                 $set: { name: _newname, description: _description }
             }
-            
+
         );
         console.log("Success");
         return true;
@@ -201,33 +201,33 @@ async function deleteGame(_gameid, _author) {
         const gameToDelete = await gamecollection.findOne({
             id: _gameid,
             author: _author
-          });
-          if (gameToDelete) {
+        });
+        if (gameToDelete) {
             // Lưu trữ dữ liệu trước khi xóa
             const gameData = gameToDelete;
-          
+
             // Thực hiện xóa
             const result = await gamecollection.deleteOne({
-              id: _gameid,
-              author: _author
+                id: _gameid,
+                author: _author
             });
-          
+
             if (result.deletedCount === 1) {
-              console.log("Delete Success");
-              return gameData;
+                console.log("Delete Success");
+                return gameData;
             } else {
-              console.log("Game not found or not authorized to delete.");
-              return false;
+                console.log("Game not found or not authorized to delete.");
+                return false;
             }
-          } else {
+        } else {
             console.log("Game not found or not authorized to delete.");
             return false;
-          }
-  }
-  catch (err) {
-    console.error(`Something went wrong trying to delete the game: ${err}`);
-    return false;
-  }
+        }
+    }
+    catch (err) {
+        console.error(`Something went wrong trying to delete the game: ${err}`);
+        return false;
+    }
 }
 
 module.exports = { register, login, gameUpload, playGame, getUser, getGameBox, updateGameInfo, getUserProfile, deleteGame };
