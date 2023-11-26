@@ -51,14 +51,13 @@ class App extends Component {
             {/*{userLogIn ? (<SideBar />,<HomePage />) : <Navigate to="/log-in" />} /> */}
             <Route path="/User-Profile" element={(
               <div className='container'>
-                {this.state.isLoggedIn ? (
+                {(
                   <>
                     <SideBar />
                     <UserProfile />
                   </>
-                ) : (
-                  <Navigate to="/log-in" />
-                )}
+                ) 
+                }
               </div>
             )} />
             <Route path="/:gameName" element={(

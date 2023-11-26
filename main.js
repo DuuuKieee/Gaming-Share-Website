@@ -125,31 +125,22 @@ const upload = multer({ storage: fileStorageEngine });
 
 // Single File Route Handler
 app.post("/upload/single", upload.single("games"), (req, res) => {
-  console.log(req.file);
-  decompress(`public/games/${req.file.filename}`, `public/games/unzip/${req.file.filename.replace(".zip", "")}`)
+
+});
+
+// Multiple Files Route Handler
+app.post("/upload/multiple", upload.array("fileInput", 2), (req, res) => {
+  console.log(req.files);
+  decompress(`public/games/${req.files[0].filename}`, `public/games/unzip/${req.files[0].filename.replace(".zip", "")}`)
     .then((files) => {
       console.log(files);
       const gameData = JSON.parse(req.body.gameData);
-      gameUpload(gameData.gameName, "testuser", uuidv4(), req.file.filename.replace(".zip", "")); // Truyền mảng tên tệp tin vào hàm gameUpload
+      gameUpload(gameData.gameName,gameData.gameDescription, "testuser", uuidv4(), req.files[0].filename.replace(".zip", ""), req.files[1].filename); // Truyền mảng tên tệp tin vào hàm gameUpload
     })
     .catch((error) => {
       console.log(error);
     });
   res.send("Single FIle upload success");
-});
-
-// Multiple Files Route Handler
-app.post("/upload/multiple", upload.array("games", 2), (req, res) => {
-  console.log(req.file);
-  // decompress(`public/games/${req.file.filename}`, `public/games/unzip/${req.file.filename.replace(".zip","")}`)
-  // .then((files) => {
-  //   console.log(files);
-  //   const gameData = JSON.parse(req.body.gameData);
-  //   gameUpload(gameData.gameName, "testuser", uuidv4(), req.file.filename.replace(".zip","")); // Truyền mảng tên tệp tin vào hàm gameUpload
-  // })
-  // .catch((error) => {
-  //   console.log(error);
-  // });
 });
 
 

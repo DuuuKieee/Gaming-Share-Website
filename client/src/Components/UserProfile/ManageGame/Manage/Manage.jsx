@@ -50,7 +50,7 @@ const Manage = () => {
         {isLoading ? (
           <p>Loading...</p>
         ) : gamesData && gamesData.userData.length > 0 ? (
-          gamesData.userData.map((game) => <ManageGameBox key={game.id} gameName={game.name} />)
+          gamesData.userData.map((game) => <ManageGameBox imgSrc={`http://localhost:8000/games/${game.image}`} key={game.id} gameName={game.name} />)
         ) : (
           <p>No games available</p>
         )}

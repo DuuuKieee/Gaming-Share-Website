@@ -100,14 +100,16 @@ async function login(_username, _password) {
     }
 }
 
-async function gameUpload(_gamename, _username, _id, dataurl) {
+async function gameUpload(_gamename,_description, _username, _id, dataurl, imageurl) {
     const recipes = [
         {
             name: _gamename,
+            description: _description,
             author: _username,
             id: _id,
             date: new Date(),
-            data: dataurl
+            data: dataurl,
+            image: imageurl
         },
     ];
 
