@@ -1,0 +1,77 @@
+.PopUpContent{
+    position: fixed;
+    width: 60%;
+    height: 60%;
+    transform: translate(-50%, -50%);
+    background-color: var(--bgColor);
+    padding: 20px;
+    border: 2px solid #000;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.3s ease-in-out;
+    .PopUpTilte{
+        color: var(--titleText);
+        text-align: center;
+    }
+    .Properties{
+        width: 100%;
+        height: 70px;
+        .Property{
+            margin: 10px;
+        }
+        .Input{
+            padding: 1rem 2rem;
+            background: var(--bgColor);
+            border-radius: 5px;
+            gap: 1rem;
+            box-shadow: 0 2px 4px var(--shadow);
+            width: 70%;
+            height: 30px;
+            input{
+                border: none;
+                outline: none;
+                background: none;
+            }
+        }
+        .Browse{
+            margin-left: 10px;
+            height: 70px;
+            width: 70px;
+            background: var(--bgColor);
+            border-radius: 5px;
+            box-shadow: 0 2px 4px var(--shadow);
+            font-weight: bold;
+            .icon{
+                gap: 1rem;
+                padding: 0;
+                width: 70px;
+                height: 70px;
+                background-color: var(--bgColor);
+                border-radius: 5px;
+                color: var(--textColor);
+                justify-self: center;
+                &:hover{
+                    cursor: pointer;
+                    background-color: var(--bodyBgColor);
+                }
+            }
+        }
+        
+    }
+
+    .Upload{
+        margin-left : 45%;
+        padding: 1rem 2rem;
+        background: var(--bgColor);
+        border-radius: 5px;
+        box-shadow: 0 2px 4px var(--shadow);
+        width: 10%;
+        height: 30%;
+        align-items: center;
+        &:hover{
+            cursor: pointer;
+            background-color: var(--bodyBgColor);
+        }
+        font-weight: bold;
+    }
+}

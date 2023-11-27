@@ -232,4 +232,37 @@ async function deleteGame(_gameid, _author) {
     }
 }
 
-module.exports = { register, login, gameUpload, playGame, getUser, getGameBox, updateGameInfo, getUserProfile, deleteGame };
+async function likeGame(_id, _user, _likestatus, _comment) {
+    var query = { username: _user };
+    try {
+        
+        var queryResult = await collection.find(query).toArray();
+        console.log(queryResult[0].gameLikeds)
+        queryResult[0].gameLikeds.forEach(element => {
+            if(element ==_id ) return false;
+            else 
+            {
+                likeStatus = _likestatus;
+                if(likeStatus == 1)
+                {
+                gamecollection.updateOne({ id: _id },{$inc: { likes: +1 }, $push:{usersLiked: _user+":" + _comment}})
+                console.log("Like thanh cong")
+                }
+                if(likeStatus == 0)
+                {gamecollection.updateOne({ id: _id },{$inc: { dislikes: +1 }, $push:{usersdisLiked: _user+":" + _comment}});
+                console.log("Dislike thanh cong")
+                }
+                return true;
+            }
+        });
+    
+    } catch (err) {
+        console.error(`Something went wrong trying to update the game information: ${err}`);
+        return false;
+    }
+}
+
+
+
+
+module.exports = { register, login, gameUpload, playGame, getUser, getGameBox, updateGameInfo, getUserProfile, deleteGame, likeGame };

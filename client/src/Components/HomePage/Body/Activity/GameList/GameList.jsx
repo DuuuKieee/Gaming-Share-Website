@@ -4,9 +4,13 @@ import { useNavigate } from "react-router-dom";
 //import icon
 import { AiOutlineLike } from "react-icons/ai";
 import { BiDislike } from "react-icons/bi";
+import Popup from "reactjs-popup";
+import LikeForm from "./Popup/LikeForm";
 
-const GameList = ({ imgSrc, gameName, description }) => {
+
+const GameList = ({ imgSrc, Key, gameName, description, likes, dislikes }) => {
   const navigate = useNavigate();
+
 
   const handleGameBoxClick = () => {
     // Chuyển hướng sang trang `/{gameName}`
@@ -21,13 +25,17 @@ const GameList = ({ imgSrc, gameName, description }) => {
         <p><span style={{ fontWeight: 'bold' }}>Giới thiệu: </span>{description}</p>
       </div>
       <div className="emo grid">
-        <button className="like">
-          <AiOutlineLike />
-        </button>
+      <Popup modal trigger={<button className="like">
+        <AiOutlineLike />
+        </button>}>
+        <LikeForm Key={Key} />
+        </Popup>
+          <span className="like-count">{likes}</span>
         <button className="dislike">
-          <BiDislike />
+        <BiDislike />
         </button>
-      </div>
+        <span className="dislike-count">{dislikes}</span>
+</div>
     </div>
   );
 };

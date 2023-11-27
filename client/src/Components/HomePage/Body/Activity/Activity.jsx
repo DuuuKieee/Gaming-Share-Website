@@ -37,7 +37,7 @@ const ListGame = () => {
         {isLoading ? (
           <p>Loading...</p>
         ) : gamesData && gamesData.gameData.length > 0 ? (
-          gamesData.gameData.map((game) => <GameList imgSrc={`http://localhost:8000/games/${game.image}`} key={game.id} gameName={game.name} description={game.description} />)
+          gamesData.gameData.map((game) => <GameList imgSrc={`http://localhost:8000/games/${game.image}`} Key={game.id} gameName={game.name} description={game.description} likes={game.likes} dislikes={game.dislikes} />)
         ) : (
           <p>No games available</p>
         )}

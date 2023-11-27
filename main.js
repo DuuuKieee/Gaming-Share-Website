@@ -2,7 +2,7 @@ const evn = require("dotenv").config();
 const express = require("express");
 const jwt = require('jsonwebtoken');
 const cookie = require('cookie');
-const { register, login, playGame, getUser, gameUpload, getGameBox, updateGameInfo, getUserProfile, deleteGame } = require("./db.js");
+const { register, login, playGame, getUser, gameUpload, getGameBox, updateGameInfo, getUserProfile, deleteGame, likeGame } = require("./db.js");
 const { jwtMiddleware, convertJWTToJS, sign } = require("./jwt.js");
 var cors = require("cors");
 const app = express();
@@ -254,6 +254,15 @@ app.post("/api/deletegame", (req, res) => {
       console.error(error);
       res.json({ message: 'DangKyLoi' });
     });
+});
+
+app.post("/api/like", (req, res) => {
+  likeGame(req.body.id, req.body.userid, req.body.likeStatus, req.body.comment)
+  .then((result) => {
+    res.status(200).json({
+      nofitication: "Interact success"
+    });
+  })
 });
 
 app.listen(port, () => {

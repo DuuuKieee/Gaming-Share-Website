@@ -41,12 +41,6 @@ const UserProfile = () => {
         }
     };
 
-    useEffect(() => {
-        if (!isLoading) {
-            // Khi dữ liệu đã tải thành công, bạn có thể thực hiện các thao tác chỉnh sửa ở đây
-        }
-    }, [isLoading]);
-
     return (
         <div className="userContent">
             <div className="bodyUser">
