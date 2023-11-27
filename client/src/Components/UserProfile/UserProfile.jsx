@@ -3,8 +3,8 @@ import "./UserProfile.scss";
 import ManageGame from "./ManageGame/ManageGame"
 import UploadGame from "./UploadGame/UploadGame";
 import Profile from "./profile/Profile";
-import avt from "../../Assets/Video Projects/a44.jpg";
 import Cookies from "js-cookie";
+import logo from "../../Assets/logo.png";
 
 const token = Cookies.get("token");
 const UserProfile = () => {
@@ -56,7 +56,7 @@ const UserProfile = () => {
                         <p>Loading...</p>
                     ) : (
                         <Profile
-                            avt={avt}
+                            avt={logo}
                             username={userData.UserProfile[0].username}
                             role={userData.UserProfile[0].role}
                             games={userData.UserProfile[0].games}
