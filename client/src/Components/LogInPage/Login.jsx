@@ -36,48 +36,11 @@ const LogIn = ({ userLogIn, setUserLogIn }) => {
   };
 
 
-  const [forgotPass, setforgotPass] = useState(false);
-  const handleForgot = () => {
-    setforgotPass((prevForgotPass) => !prevForgotPass);
-  };
+ 
   return (
     <div className="LogInContainer">
       <div className="loginContent">
         <form onSubmit={handleLogin} className="LoginForm grid">
-          {forgotPass ? (
-            <>
-              <h1 className="Title">Forgot Your Password?</h1>
-              <h2 className="SubTitle">
-                Please fill in the email that you used to register. You will be
-                sent an email with instructions on how to reset your password.
-              </h2>
-              <div className="inputBox">
-                <input
-                  type="text"
-                  placeholder="Username"
-                  required
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-              </div>
-              <div className="inputBox">
-                <input
-                  type="email"
-                  placeholder="Email"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              <button className="SubmitButton" type="submit">
-                Send Code
-              </button>
-              <button onClick={handleForgot} className="btn">
-                Back to Login
-              </button>
-            </>
-          ) : (
-            <>
               <h1 className="Title">Log In</h1>
               <div className="inputBox">
                 <input
@@ -97,19 +60,9 @@ const LogIn = ({ userLogIn, setUserLogIn }) => {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-
-              <div className="rememberForgot flex">
-                <label>
-                  <input type="checkbox" />
-                  Remember Me
-                </label>
-                <button onClick={handleForgot}>Forgot your password?</button>
-              </div>
               <button className="SubmitButton" type="submit">
                 Log In
               </button>
-            </>
-          )}
 
           <div className="RegisterLink">
             <p>

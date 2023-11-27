@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./GamePage.scss";
+import CmtBox from "./CmtBox/CmtBox";
 
 const GamePage = () => {
   const [responseData, setResponseData] = useState();
@@ -50,6 +51,10 @@ const GamePage = () => {
               title="Your Page" 
             />
           )}
+      </div>
+      <div className="CmtBoxes">
+          <h1>Bình luận:</h1>
+          <CmtBox ></CmtBox>
       </div>
     </div>
   );

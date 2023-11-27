@@ -1,7 +1,6 @@
 import React from "react";
 import "./Header.scss";
-import {HiSearch} from "react-icons/hi";
-import itstoolate from "../../Assets/itstoolate.jpg";
+import Banner from "../../Assets/Banner.gif";
 import SearchBar from "./SearchBar/SearchBar";
 
 const Header = () => {
@@ -17,7 +16,7 @@ const Header = () => {
             </div>
 
             <div className="TitleImg">
-                <img src={itstoolate}></img>
+                <img src={Banner}></img>
             </div>
         </div>
     )

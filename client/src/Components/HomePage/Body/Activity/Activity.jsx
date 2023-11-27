@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./Activity.scss";
-import img1 from "../../../../Assets/Video Projects/a52.jpg";
 import GameList from "./GameList/GameList";
 
 const ListGame = () => {

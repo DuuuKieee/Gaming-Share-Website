@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import "./Manage.scss";
 
 /*import icon*/
-import img1 from "../../../../Assets/Video Projects/a1.jpg";
 import ManageGameBox from "./GameBox/GameBox";
 import Cookies from "js-cookie";
 const Manage = () => {
@@ -54,9 +53,6 @@ const Manage = () => {
         ) : (
           <p>No games available</p>
         )}
-        <li>
-          <ManageGameBox imgSrc={img1} gameName={gameName} description={description} />
-        </li>
       </ul>
     </div>
   )
