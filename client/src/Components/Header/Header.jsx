@@ -1,9 +1,10 @@
-import React from "react";
+import React, {useState} from "react";
 import "./Header.scss";
 import Banner from "../../Assets/Banner.gif";
 import SearchBar from "./SearchBar/SearchBar";
 
 const Header = () => {
+    const [results, setResults] = useState([]);
     return (
         <div className="top grid">
             <div className="Header flex">
@@ -12,7 +13,7 @@ const Header = () => {
                     <h3>PLease enjoy your moment~</h3>
                 </div>
 
-                <SearchBar />
+                <SearchBar setResults={setResults}/>
             </div>
 
             <div className="TitleImg">

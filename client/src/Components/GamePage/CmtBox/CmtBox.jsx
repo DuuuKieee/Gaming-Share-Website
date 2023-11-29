@@ -1,18 +1,29 @@
 import React from "react";
 import "./CmtBox.scss";
 import img1 from "../../../Assets/logo.png";
+//import icon
+import { AiOutlineLike } from "react-icons/ai";
+import { BiDislike } from "react-icons/bi";
 
-const CmtBox = () => {
+const CmtBox = ({username, comment, flag}) => {
     //test 
-    const username = "Kai Mink";
-    const comment = "web như loz";
+    console.log(typeof username)
     return (
-        <div className="CmtBox flex" >
-        <img src={img1} className="UserIcon" alt="User Icon"/>
-        <div className="CmtContent grid">
-            <p><span style={{ fontWeight: 'bold' }}>Người dùng: </span>{username}</p>
-            <p><span style={{ fontWeight: 'bold' }}>Bình luận: </span>{comment}</p>
-        </div>
+        <div>
+            <div className="CmtBox flex" >
+                <img src={img1} className="UserIcon" alt="User Icon"/>
+                <div className="CmtContent grid">
+                    <p><span style={{ fontWeight: 'bold' }}>Người dùng: </span>{username}</p>
+                    <p><span style={{ fontWeight: 'bold' }}>Bình luận: </span>{comment}</p>
+                    {flag ? (
+                        <AiOutlineLike className="icon" />
+                    ):
+                    (
+                        <BiDislike className="icon"/>
+                    )
+                    }
+                </div>
+            </div>
         </div>
     )
 }

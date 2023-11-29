@@ -41,15 +41,13 @@ const Manage = () => {
     console.log(gamesData);
   }, [gamesData]);
 
-  const gameName = "Game-X";
-  const description = "aaa";
   return (
     <div className="manageContent flex">
       <ul className="ManageGameBoxes grid">
         {isLoading ? (
           <p>Loading...</p>
         ) : gamesData && gamesData.userData.length > 0 ? (
-          gamesData.userData.map((game) => <ManageGameBox imgSrc={`http://localhost:8000/games/${game.image}`} key={game.id} description={game.description} gameName={game.name} />)
+          gamesData.userData.map((game) => <ManageGameBox idkey={game.id} imgSrc={`http://localhost:8000/games/${game.image}`} description={game.description} gameName={game.name} />)
         ) : (
           <p>No games available</p>
         )}

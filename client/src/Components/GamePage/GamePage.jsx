@@ -6,6 +6,7 @@ import CmtBox from "./CmtBox/CmtBox";
 const GamePage = () => {
   const [responseData, setResponseData] = useState();
   const { gameName } = useParams();
+  const [isLoading, setIsLoading] = useState(true);
 
   const [showGameWindow, setShowGameWindow] = useState(false);
 
@@ -22,7 +23,6 @@ const GamePage = () => {
       .then((response) => {
         if (response.ok) {
           // Xử lý thành công
-          console.log(gameName);
           return response.json();
         } else {
           throw new Error("Something went wrong");
@@ -33,7 +33,7 @@ const GamePage = () => {
         setResponseData(data.gameData); // Lưu giá trị data vào state
       })
       .catch((error) => {
-        console.error(error);
+        console.error(error); 
       });
       setShowGameWindow(true);
   };
@@ -47,14 +47,23 @@ const GamePage = () => {
           )}
           {responseData && showGameWindow && (
             <iframe className="GameWindow"
-               src={`http://localhost:8000/games/unzip/${responseData}/index.html`}
+               src={`http://localhost:8000/games/unzip/${responseData.data}/index.html`}
               title="Your Page" 
             />
           )}
       </div>
       <div className="CmtBoxes">
           <h1>Bình luận:</h1>
-          <CmtBox ></CmtBox>
+          {!isLoading ? (
+          <p>Loading...</p>
+        ) : responseData && showGameWindow > 0 ? (
+          responseData.usersReview.map((game) => <CmtBox username={game.username} comment={game.comment} flag={game.flag} />)
+        
+        )
+        
+        : (
+          <p>No games available</p>
+        )}
       </div>
     </div>
   );

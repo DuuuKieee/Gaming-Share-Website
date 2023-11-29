@@ -259,9 +259,18 @@ app.post("/api/deletegame", (req, res) => {
 app.post("/api/like", (req, res) => {
   likeGame(req.body.id, req.body.userid, req.body.likeStatus, req.body.comment)
   .then((result) => {
+    if(result == true)
+    {
     res.status(200).json({
       nofitication: "Interact success"
     });
+  }
+  else
+  {
+    res.status(200).json({
+      nofitication: "Bạn đã đánh giá rồi"
+    });
+  }
   })
 });
 

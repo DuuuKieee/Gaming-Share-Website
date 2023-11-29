@@ -4,7 +4,7 @@ import "./LikeForm.scss";
 
 const LikeForm = (Key) => {
   const [gameDescription, setGameDescription] = useState("");
-  const [status, setStatus] = useState("");
+  const [Status, setStatus] = useState("");
   const [message, setMessage] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false); // Thêm state isSubmitted
 
@@ -41,8 +41,8 @@ const LikeForm = (Key) => {
   // Kiểm tra nếu đã submit thành công, hiển thị thông báo và ẩn form
   if (isSubmitted) {
     return (
-      <div className="PopUpContent grid">
-        <h2 className="PopUpTilte">Đánh giá</h2>
+      <div className="ReviewContent grid">
+        <h2 className="ReviewTilte">Đánh giá</h2>
         <p>Đã gửi đánh giá thành công!</p>
       </div>
     );
@@ -50,18 +50,18 @@ const LikeForm = (Key) => {
 
   // Nếu chưa submit hoặc submit không thành công, hiển thị form bình thường
   return (
-    <div className="PopUpContent grid">
-      <h2 className="PopUpTilte">Đánh giá</h2>
-      <div className="Properties flex">
-        <h3 className="Property">Hãy viết bài đánh giá:</h3>
+    <div className="ReviewContent grid">
+      <h2 className="ReviewTilte">Đánh giá</h2>
+      <div className="ReviewProperties flex">
+        <h3 className="ReviewProperty">Hãy viết bài đánh giá:</h3>
         <input
           type="text"
-          className="Input"
+          className="ReviewInput"
           onChange={handleGameDescriptionChange}
           placeholder="Review game..."
         />
       </div>
-      <button className="Upload flex" onClick={fetchDataFromMongoDB}>
+      <button className="Review flex" onClick={fetchDataFromMongoDB}>
         <p>Đánh giá</p>
       </button>
     </div>

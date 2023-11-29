@@ -27,7 +27,6 @@ const LogIn = ({ userLogIn, setUserLogIn }) => {
 
       if (response.status === 200) {
         Cookies.set('token', data.token);
-        setUserLogIn(true);
         navigate("/");
       }
     } catch (error) {

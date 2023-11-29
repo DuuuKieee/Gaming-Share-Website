@@ -7,9 +7,9 @@ import {AiOutlineEdit} from "react-icons/ai";
 import {GiSaveArrow} from "react-icons/gi";
 
 
-const ManageGameBox = ({ imgSrc, gameName, description, key }) => {
+const ManageGameBox = ({ imgSrc, gameName, description, idkey }) => {
     const [isEditing, setIsEditing] = useState(false);
-    const [GameName, setGameName] = useState(`${key}`); // Giá trị mặc định của tên game
+    const [GameName, setGameName] = useState(); // Giá trị mặc định của tên game
     const [GameID, setID] = useState(`${gameName}`); // Giá trị mặc định của tên game
     const [gameDescription, setGameDescription] = useState(`${description}`);
     const fetchDataFromMongoDB = async () => {
@@ -21,11 +21,38 @@ const ManageGameBox = ({ imgSrc, gameName, description, key }) => {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                id: GameID,
-                newname: GameName,
+                id: idkey,
+                author: GameName,
                 description: gameDescription
               }),
             })
+            console.log(idkey + gameName + imgSrc);
+    
+          if (response.ok) {
+            //in gì đó thể hiện thành công
+            console.log("Update thanh cong");
+
+          } else {
+            console.log("Error fetching data from MongoDB");
+          }
+        } catch (error) {
+          console.log("Error fetching data from MongoDB:", error);
+        }
+      };
+      const deleteDataFromMongoDB = async () => {
+        try {
+          const response = await fetch("http://localhost:8000/api/deletegame",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                id: idkey,
+                author: "testuser",
+              }),
+            })
+            console.log(idkey + gameName + imgSrc);
     
           if (response.ok) {
             //in gì đó thể hiện thành công
@@ -52,6 +79,7 @@ const ManageGameBox = ({ imgSrc, gameName, description, key }) => {
     };
     const handleDelClick = () => {
         //làm việc với database xóa game
+        deleteDataFromMongoDB();
     };
 
     const handleNameChange = (e) => {
@@ -89,7 +117,7 @@ const ManageGameBox = ({ imgSrc, gameName, description, key }) => {
                         
                     </div>
                     <div className="CustomContent grid">
-                        <button className="CustomButton">
+                        <button className="CustomButton" onClick={handleDelClick}>
                             <ImBin className="DelIcon"/>
                         </button>
                         {isEditing ? (

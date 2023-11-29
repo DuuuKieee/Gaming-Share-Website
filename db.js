@@ -109,7 +109,10 @@ async function gameUpload(_gamename,_description, _username, _id, dataurl, image
             id: _id,
             date: new Date(),
             data: dataurl,
-            image: imageurl
+            image: imageurl,
+            likes: 0,
+            usersLikeds: [],
+            usersdisLikeds: [],
         },
     ];
 
@@ -126,7 +129,7 @@ async function playGame(_gamename) {
     try {
         var queryResult = await gamecollection.find(query).toArray();
         if (queryResult.length == 1) {
-            var gameData = queryResult[0].data;
+            var gameData = queryResult[0];
             console.log(gameData);
             return gameData;
 
@@ -233,34 +236,36 @@ async function deleteGame(_gameid, _author) {
 }
 
 async function likeGame(_id, _user, _likestatus, _comment) {
-    var query = { username: _user };
+    var query = { id: _id };
     try {
-        
-        var queryResult = await collection.find(query).toArray();
-        console.log(queryResult[0].gameLikeds)
-        queryResult[0].gameLikeds.forEach(element => {
-            if(element ==_id ) return false;
-            else 
-            {
-                likeStatus = _likestatus;
-                if(likeStatus == 1)
-                {
-                gamecollection.updateOne({ id: _id },{$inc: { likes: +1 }, $push:{usersLiked: _user+":" + _comment}})
-                console.log("Like thanh cong")
-                }
-                if(likeStatus == 0)
-                {gamecollection.updateOne({ id: _id },{$inc: { dislikes: +1 }, $push:{usersdisLiked: _user+":" + _comment}});
-                console.log("Dislike thanh cong")
-                }
-                return true;
-            }
-        });
-    
-    } catch (err) {
-        console.error(`Something went wrong trying to update the game information: ${err}`);
+      var queryResult = await gamecollection.find(query).toArray();
+      console.log(queryResult[0].gameLikeds);
+  
+      const userLiked = queryResult[0].usersLiked.find((element) => element === _user);
+      if (userLiked) {
         return false;
+      }
+  
+      if (_likestatus === 1) {
+        gamecollection.updateOne(
+          { id: _id },
+          { $inc: { likes: 1 }, $push: { usersReview: {username: _user, comment: _comment, flag: true} } }
+        );
+        console.log("Like thanh cong");
+      }
+      if (_likestatus === 0) {
+        gamecollection.updateOne(
+          { id: _id },
+          { $inc: { dislikes: 1 }, $push: { usersReview: {username: _user, comment: _comment, flag: false} } }
+        );
+        console.log("Dislike thanh cong");
+      }
+      return true;
+    } catch (err) {
+      console.error(`Something went wrong trying to update the game information: ${err}`);
+      return false;
     }
-}
+  }
 
 
 

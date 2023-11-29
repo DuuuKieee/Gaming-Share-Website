@@ -6,9 +6,10 @@ import { AiOutlineLike } from "react-icons/ai";
 import { BiDislike } from "react-icons/bi";
 import Popup from "reactjs-popup";
 import LikeForm from "./Popup/LikeForm";
+import DislikeForm from "./Popup/DislikeForm";
 
 
-const GameList = ({ imgSrc, Key, gameName, description, likes, dislikes }) => {
+const GameList = ({ imgSrc, Key, gameName, description, likes, dislikes, status }) => {
   const navigate = useNavigate();
 
 
@@ -26,15 +27,17 @@ const GameList = ({ imgSrc, Key, gameName, description, likes, dislikes }) => {
       </div>
       <div className="emo grid">
       <Popup modal trigger={<button className="like">
-        <AiOutlineLike />
-        </button>}>
+                            <AiOutlineLike />
+                            </button>}>
         <LikeForm Key={Key} />
-        </Popup>
-          <span className="like-count">{likes}</span>
-        <button className="dislike">
-        <BiDislike />
-        </button>
-        <span className="dislike-count">{dislikes}</span>
+      </Popup>
+      <p className="emo-count">{likes}</p>
+      <Popup modal trigger={<button className="dislike">
+                            <BiDislike />
+                            </button>}>
+        <DislikeForm Key={Key} />
+      </Popup>
+      <p className="emo-count">{dislikes}</p>
 </div>
     </div>
   );
