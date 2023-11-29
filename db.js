@@ -65,7 +65,9 @@ async function register(_email, _username, _password, _password_repeat) {
                 {
                     username: _username,
                     password: hashPassword(_password),
-                    email: _email
+                    email: _email,
+                    games: 0,
+
                 },
             ];
 
@@ -111,8 +113,8 @@ async function gameUpload(_gamename,_description, _username, _id, dataurl, image
             data: dataurl,
             image: imageurl,
             likes: 0,
-            usersLikeds: [],
-            usersdisLikeds: [],
+            dislikes: 0,
+            usersReview: [],
         },
     ];
 

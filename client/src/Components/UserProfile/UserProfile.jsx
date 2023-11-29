@@ -1,23 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect  } from "react";
 import "./UserProfile.scss";
 import ManageGame from "./ManageGame/ManageGame"
 import UploadGame from "./UploadGame/UploadGame";
 import Profile from "./profile/Profile";
 import Cookies from "js-cookie";
 import logo from "../../Assets/logo.png";
+import { useNavigate } from "react-router-dom";
 
 const token = Cookies.get("token");
 const UserProfile = () => {
     const [userData, setUserData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const games = 0;
-
+    const navigate = useNavigate(); 
     useEffect(() => {
         fetchUserData();
     }, []);
 
 
     const fetchUserData = async () => {
+        if (!token) {
+            navigate("/log-in");
+        }
         try {
             const response = await fetch("http://localhost:8000/api/userprofile", {
                 method: "POST",

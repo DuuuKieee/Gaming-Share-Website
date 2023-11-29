@@ -7,7 +7,7 @@ const LogIn = ({ userLogIn, setUserLogIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-
+  if (Cookies.get("token")) Cookies.remove('token');
   const handleLogin = async (event) => {
     event.preventDefault();
     try {

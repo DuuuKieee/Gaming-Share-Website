@@ -24,17 +24,13 @@ const SideBar = () => {
                                 Trang cá nhân
                             </a>
                         </li>
-                        {/* <li className="ListItems">
-                            <a href="/log-in" className="tagLink">
-                                Đăng nhập
+                        <li className="ListItems">
+                            <a href={"/log-in"} className="tagLink">
+                                Đăng xuất
                             </a>
                         </li>
-                        <li className="ListItems">
-                            <a href="/Register" className="tagLink">
-                                Đăng ký
-                            </a>
-                        </li> */}
                     </ul>
+
                 </div>
             </div>
         )
@@ -53,11 +49,7 @@ const SideBar = () => {
                         MENU
                     </h3>
                     <ul className="UserMenuList grid">
-                        {/* <li className="ListItems">
-                            <a href={isLogin ? "/User-Profile" : "/log-in"} className="tagLink">
-                                Trang cá nhân
-                            </a>
-                        </li> */}
+                        { }
                         <li className="ListItems">
                             <a href="/log-in" className="tagLink">
                                 Đăng nhập
