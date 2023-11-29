@@ -135,7 +135,7 @@ app.post("/upload/multiple", upload.array("fileInput", 2), (req, res) => {
     .then((files) => {
       console.log(files);
       const gameData = JSON.parse(req.body.gameData);
-      gameUpload(gameData.gameName,gameData.gameDescription, "testuser", uuidv4(), req.files[0].filename.replace(".zip", ""), req.files[1].filename); // Truyền mảng tên tệp tin vào hàm gameUpload
+      gameUpload(gameData.gameName, gameData.gameDescription, "testuser", uuidv4(), req.files[0].filename.replace(".zip", ""), req.files[1].filename); // Truyền mảng tên tệp tin vào hàm gameUpload
     })
     .catch((error) => {
       console.log(error);
@@ -257,21 +257,21 @@ app.post("/api/deletegame", (req, res) => {
 });
 
 app.post("/api/like", (req, res) => {
-  likeGame(req.body.id, req.body.userid, req.body.likeStatus, req.body.comment)
-  .then((result) => {
-    if(result == true)
-    {
-    res.status(200).json({
-      nofitication: "Interact success"
-    });
-  }
-  else
-  {
-    res.status(200).json({
-      nofitication: "Bạn đã đánh giá rồi"
-    });
-  }
-  })
+  const decodedToken = jwt.verify(req.body.token, process.env.ACCESS_SECRET);
+  console.log(decodedToken.data.username);
+  likeGame(req.body.id, decodedToken.data.username, req.body.likeStatus, req.body.comment)
+    .then((result) => {
+      if (result == true) {
+        res.status(200).json({
+          nofitication: "Interact success"
+        });
+      }
+      else {
+        res.status(200).json({
+          nofitication: "Bạn đã đánh giá rồi"
+        });
+      }
+    })
 });
 
 app.listen(port, () => {

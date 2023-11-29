@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { HiOutlineUpload } from "react-icons/hi";
 import "./LikeForm.scss";
+import Cookies from "js-cookie";
 
+const token = Cookies.get("token");
 const LikeForm = (Key) => {
   const [gameDescription, setGameDescription] = useState("");
   const [Status, setStatus] = useState("");
@@ -17,7 +19,7 @@ const LikeForm = (Key) => {
         },
         body: JSON.stringify({
           id: Key.Key,
-          userid: "testuser",
+          token: token,
           likeStatus: 1,
           comment: gameDescription,
         }),

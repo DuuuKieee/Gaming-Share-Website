@@ -102,7 +102,7 @@ async function login(_username, _password) {
     }
 }
 
-async function gameUpload(_gamename,_description, _username, _id, dataurl, imageurl) {
+async function gameUpload(_gamename, _description, _username, _id, dataurl, imageurl) {
     const recipes = [
         {
             name: _gamename,
@@ -240,34 +240,34 @@ async function deleteGame(_gameid, _author) {
 async function likeGame(_id, _user, _likestatus, _comment) {
     var query = { id: _id };
     try {
-      var queryResult = await gamecollection.find(query).toArray();
-      console.log(queryResult[0].gameLikeds);
-  
-      const userLiked = queryResult[0].usersLiked.find((element) => element === _user);
-      if (userLiked) {
-        return false;
-      }
-  
-      if (_likestatus === 1) {
-        gamecollection.updateOne(
-          { id: _id },
-          { $inc: { likes: 1 }, $push: { usersReview: {username: _user, comment: _comment, flag: true} } }
-        );
-        console.log("Like thanh cong");
-      }
-      if (_likestatus === 0) {
-        gamecollection.updateOne(
-          { id: _id },
-          { $inc: { dislikes: 1 }, $push: { usersReview: {username: _user, comment: _comment, flag: false} } }
-        );
-        console.log("Dislike thanh cong");
-      }
-      return true;
+        var queryResult = await gamecollection.find(query).toArray();
+        console.log(queryResult[0].usersReview);
+
+        const userLiked = queryResult[0].usersReview.find((element) => element === _user);
+        if (userLiked) {
+            return false;
+        }
+
+        if (_likestatus === 1) {
+            gamecollection.updateOne(
+                { id: _id },
+                { $inc: { likes: 1 }, $push: { usersReview: { username: _user, comment: _comment, flag: true } } }
+            );
+            console.log("Like thanh cong");
+        }
+        if (_likestatus === 0) {
+            gamecollection.updateOne(
+                { id: _id },
+                { $inc: { dislikes: 1 }, $push: { usersReview: { username: _user, comment: _comment, flag: false } } }
+            );
+            console.log("Dislike thanh cong");
+        }
+        return true;
     } catch (err) {
-      console.error(`Something went wrong trying to update the game information: ${err}`);
-      return false;
+        console.error(`Something went wrong trying to update the game information: ${err}`);
+        return false;
     }
-  }
+}
 
 
 
