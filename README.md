@@ -1,6 +1,7 @@
 <p align="center">
  <h1 align="center">Gaming Share Game</h1>
 </p>
+
 ## Overview
 Trang web được xây dựng gồm 2 phần Front end được xây dựng bằng ReactJS và phần Backend sử dụng RESTful API cho phép phần Frontend sử dụng thông qua API.
 ![Alt Text](Components.png)
@@ -39,3 +40,11 @@ Các chức năng và tiêu chí dành cho khách hàng bao gồm khách hàng c
 ![Alt Text](DeleteGameFlow.png)
 ### Play Game flow
 ![Alt Text](PlayGameFLow.png)
+### Delete Game flow 
+![Alt Text](DeleteGameFlow.png)
+### Play Game flow
+![Alt Text](PlayGameFLow.png)
+
+## About Website
+![Alt Text](Playgame.png)
+![Alt Text](Gamelist.png)
