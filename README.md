@@ -46,5 +46,5 @@ Các chức năng và tiêu chí dành cho khách hàng bao gồm khách hàng c
 ![Alt Text](PlayGameFLow.png)
 
 ## About Website
+![Alt Text](UI.png)
 ![Alt Text](Playgame.png)
-![Alt Text](Gamelist.png)
